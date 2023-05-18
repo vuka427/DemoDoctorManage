@@ -1,0 +1,183 @@
+﻿
+@{
+    ViewBag.Title = "Doctor Management";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+
+}
+
+
+
+
+
+<h3 class="text-center">Management</h3>
+<div>
+    <div id="table-list-doctor" style="z-index:-99 ;"  class="justify-content-center position-absolute bg-white">
+        <div class="row position-relative w-100">
+            <div class="col-8">
+                <form class="form-group">
+                    <div class="form-group">
+                        <label for="doctorname" class="control-label">Doctor Name</label>
+                        <input type="text" class="form-control" id="doctorname" placeholder="Doctor name">
+                    </div>
+
+                    <label for="" class="control-label">Gender</label>
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="Radios1" value="Male" checked>
+                        <label class="form-check-label" for="Radios1">
+                            Male
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input class="form-check-input" type="radio" name="gender" id="Radios2" value="Female">
+                        <label class="form-check-label" for="eRadios2">
+                            Female
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="brithofdate" class="control-label">Brith of date</label>
+                        <input type="date" class="form-control" id="brithofdate">
+                    </div>
+                    <div class="form-group">
+                        <label for="mobile" class="control-label">Mobile No</label>
+                        <input type="text" class="form-control" id="mobile" placeholder="...">
+                    </div>
+                    <div class="form-group">
+                        <label for="address" class="control-label">Address</label>
+                        <textarea type="date" rows="4" class="form-control" id="address" placeholder="..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="workingstartdate" class="control-label">Working start date</label>
+                        <input type="date" class="form-control" id="workingstartdate">
+                    </div>
+                    <div class="form-group">
+                        <label for="workingenddate" class="control-label">Working end date</label>
+                        <input type="date" class="form-control" id="workingenddate">
+                    </div>
+                </form>
+            </div>
+        </div>
+       
+
+    </div>
+
+
+    <div id="l-form-doctor" style="z-index:99 ;" class="position-absolute bg-white">
+        <table id="DoctorTable" class="display">
+        </table>
+    </div>
+
+</div>
+
+
+
+
+
+
+
+@section scripts{
+
+
+
+    <script>
+        $(document).ready(function () {
+
+            $('#DoctorTable').DataTable({
+
+                "sAjaxSource": "@Url.Action("LoadDoctorData", "DoctorManage")",
+                "bServerSide": true,
+                "bProcessing": true,
+                "responsive": true,
+                "bSearchable": true,
+                "order": [[1, 'asc']],
+                "language": {
+                    "emptyTable": "No record found.",
+                    "processing":
+                        '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
+                },
+                "columns": [
+                    {
+                        "data": "DOCTORID",
+                        "title": 'ID',
+                        "autoWidth": true,
+                        "searchable": true
+                        
+                    },
+                    {
+                        "data": "DOCTORNAME",
+                        "title": "Name",
+                        "autoWidth": true,
+                        "searchable": true
+                        
+                    },
+                    {
+                        "data": "DOCTORGENDER",
+                        "title": "Gender",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "DOCTORDATEOFBIRTH",
+                        "title": "BrithDate",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "DOCTORMOBILENO",
+                        "title": "Mobile NO",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "DOCTORADDRESS",
+                        "title": "Address",
+                        "autoWidth": true,
+                        "searchable": true
+                    }, {
+                        "data": "DEPARTMENT",
+                        "title": "Deparment",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "WORKINGSTARTDATE",
+                        "title": "Working Start Date",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "WORKINGENDDATE",
+                        "title": "Working End Date",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "CREATEBY",
+                        "title": "Create By",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "CREATEDATE",
+                        "title": "Create Date",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "UPDATEBY",
+                        "title": "Update By",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                    {
+                        "data": "UPDATEDATE",
+                        "title": "Update Date",
+                        "autoWidth": true,
+                        "searchable": true
+                    },
+                ]
+
+            });
+
+        });
+
+    </script>
+}

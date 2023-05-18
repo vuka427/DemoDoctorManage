@@ -1,0 +1,178 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+    <Schema Namespace="DoctorDb.Store" Alias="Self" Provider="System.Data.SqlClient" ProviderManifestToken="2012" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+  <EntityContainer Name="DoctorDbStoreContainer">
+    <EntitySet Name="DOCTOR" EntityType="DoctorDb.Store.DOCTOR" store:Type="Tables" Schema="dbo" />
+    <EntitySet Name="DEPARTMENT" EntityType="DoctorDb.Store.DEPARTMENT" store:Type="Tables" Schema="dbo" />
+    <AssociationSet Name="DEPARTMENTDOCTORMODEL" Association="DoctorDb.Store.DEPARTMENTDOCTORMODEL">
+      <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+      <End Role="DOCTORMODEL" EntitySet="DOCTOR" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="DOCTOR">
+    <Key>
+      <PropertyRef Name="DOCTORID" />
+    </Key>
+    <Property Name="DOCTORID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DEPARTMENTID" Type="int" Nullable="false" />
+    <Property Name="DOCTORNAME" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="DOCTORGENDER" Type="bit" Nullable="false" />
+    <Property Name="DOCTORDATEOFBIRTH" Type="datetime" Nullable="false" />
+    <Property Name="DOCTORMOBILENO" Type="nvarchar(max)" Nullable="false" />
+    <Property Name="DOCTORADDRESS" Type="nvarchar" Nullable="false" MaxLength="256" />
+    <Property Name="WORKINGSTARTDATE" Type="datetime" Nullable="false" />
+    <Property Name="WORKINGENDDATE" Type="datetime" Nullable="false" />
+    <Property Name="CREATEBY" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CREATEDATE" Type="datetime" Nullable="false" />
+    <Property Name="UPDATEBY" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="UPDATEDATE" Type="datetime" Nullable="false" />
+    <Property Name="DELETEFLAG" Type="bit" Nullable="false" />
+    <Property Name="DEPARTMENT_DEPARTMENTID" Type="int" Nullable="false" />
+  </EntityType>
+  <EntityType Name="DEPARTMENT">
+    <Key>
+      <PropertyRef Name="DEPARTMENTID" />
+    </Key>
+    <Property Name="DEPARTMENTID" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="DEPARTMENTNAME" Type="nvarchar" Nullable="false" MaxLength="256" />
+    <Property Name="CREATEBY" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="CREATEDATE" Type="datetime" Nullable="false" />
+    <Property Name="UPDATEBY" Type="nvarchar" Nullable="false" MaxLength="50" />
+    <Property Name="UPDATEDATE" Type="datetime" Nullable="false" />
+    <Property Name="DELETEFLAG" Type="bit" Nullable="false" />
+  </EntityType>
+  <Association Name="DEPARTMENTDOCTORMODEL">
+    <End Role="DEPARTMENT" Type="DoctorDb.Store.DEPARTMENT" Multiplicity="1" />
+    <End Role="DOCTORMODEL" Type="DoctorDb.Store.DOCTOR" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="DEPARTMENT">
+        <PropertyRef Name="DEPARTMENTID" />
+      </Principal>
+      <Dependent Role="DOCTORMODEL">
+        <PropertyRef Name="DEPARTMENT_DEPARTMENTID" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema></edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema xmlns="http://schemas.microsoft.com/ado/2009/11/edm" xmlns:cg="http://schemas.microsoft.com/ado/2006/04/codegeneration" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" Namespace="DoctorDb" Alias="Self" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" annotation:UseStrongSpatialTypes="false">
+        <EntityContainer Name="DoctorDbContainer" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="DOCTOR" EntityType="DoctorDb.DOCTORMODEL" />
+          <EntitySet Name="DEPARTMENT" EntityType="DoctorDb.DEPARTMENT" />
+          <AssociationSet Name="DEPARTMENTDOCTORMODEL" Association="DoctorDb.DEPARTMENTDOCTORMODEL">
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+            <End Role="DOCTORMODEL" EntitySet="DOCTOR" />
+          </AssociationSet>
+        </EntityContainer>
+        <EntityType Name="DOCTORMODEL">
+          <Key>
+            <PropertyRef Name="DOCTORID" />
+          </Key>
+          <Property Name="DOCTORID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DEPARTMENTID" Type="Int32" Nullable="false" />
+          <Property Name="DOCTORNAME" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="DOCTORGENDER" Type="Boolean" Nullable="false" />
+          <Property Name="DOCTORDATEOFBIRTH" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DOCTORMOBILENO" Type="String" Nullable="false" />
+          <Property Name="DOCTORADDRESS" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="WORKINGSTARTDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="WORKINGENDDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="CREATEBY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATEDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UPDATEBY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATEDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DELETEFLAG" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DEPARTMENT" Relationship="DoctorDb.DEPARTMENTDOCTORMODEL" FromRole="DOCTORMODEL" ToRole="DEPARTMENT" />
+        </EntityType>
+        <EntityType Name="DEPARTMENT">
+          <Key>
+            <PropertyRef Name="DEPARTMENTID" />
+          </Key>
+          <Property Name="DEPARTMENTID" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="DEPARTMENTNAME" Type="String" Nullable="false" MaxLength="256" FixedLength="false" Unicode="true" />
+          <Property Name="CREATEBY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="CREATEDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="UPDATEBY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+          <Property Name="UPDATEDATE" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="DELETEFLAG" Type="Boolean" Nullable="false" />
+          <NavigationProperty Name="DOCTORMODEL" Relationship="DoctorDb.DEPARTMENTDOCTORMODEL" FromRole="DEPARTMENT" ToRole="DOCTORMODEL" />
+        </EntityType>
+        <Association Name="DEPARTMENTDOCTORMODEL">
+          <End Type="DoctorDb.DEPARTMENT" Role="DEPARTMENT" Multiplicity="1" />
+          <End Type="DoctorDb.DOCTORMODEL" Role="DOCTORMODEL" Multiplicity="*" />
+        </Association>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+    <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+  <EntityContainerMapping StorageEntityContainer="DoctorDbStoreContainer" CdmEntityContainer="DoctorDbContainer">
+    <EntitySetMapping Name="DOCTOR">
+      <EntityTypeMapping TypeName="IsTypeOf(DoctorDb.DOCTORMODEL)">
+        <MappingFragment StoreEntitySet="DOCTOR">
+          <ScalarProperty Name="DOCTORID" ColumnName="DOCTORID" />
+          <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENTID" />
+          <ScalarProperty Name="DOCTORNAME" ColumnName="DOCTORNAME" />
+          <ScalarProperty Name="DOCTORGENDER" ColumnName="DOCTORGENDER" />
+          <ScalarProperty Name="DOCTORDATEOFBIRTH" ColumnName="DOCTORDATEOFBIRTH" />
+          <ScalarProperty Name="DOCTORMOBILENO" ColumnName="DOCTORMOBILENO" />
+          <ScalarProperty Name="DOCTORADDRESS" ColumnName="DOCTORADDRESS" />
+          <ScalarProperty Name="WORKINGSTARTDATE" ColumnName="WORKINGSTARTDATE" />
+          <ScalarProperty Name="WORKINGENDDATE" ColumnName="WORKINGENDDATE" />
+          <ScalarProperty Name="CREATEBY" ColumnName="CREATEBY" />
+          <ScalarProperty Name="CREATEDATE" ColumnName="CREATEDATE" />
+          <ScalarProperty Name="UPDATEBY" ColumnName="UPDATEBY" />
+          <ScalarProperty Name="UPDATEDATE" ColumnName="UPDATEDATE" />
+          <ScalarProperty Name="DELETEFLAG" ColumnName="DELETEFLAG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="DEPARTMENT">
+      <EntityTypeMapping TypeName="IsTypeOf(DoctorDb.DEPARTMENT)">
+        <MappingFragment StoreEntitySet="DEPARTMENT">
+          <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENTID" />
+          <ScalarProperty Name="DEPARTMENTNAME" ColumnName="DEPARTMENTNAME" />
+          <ScalarProperty Name="CREATEBY" ColumnName="CREATEBY" />
+          <ScalarProperty Name="CREATEDATE" ColumnName="CREATEDATE" />
+          <ScalarProperty Name="UPDATEBY" ColumnName="UPDATEBY" />
+          <ScalarProperty Name="UPDATEDATE" ColumnName="UPDATEDATE" />
+          <ScalarProperty Name="DELETEFLAG" ColumnName="DELETEFLAG" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <AssociationSetMapping Name="DEPARTMENTDOCTORMODEL" TypeName="DoctorDb.DEPARTMENTDOCTORMODEL" StoreEntitySet="DOCTOR">
+      <EndProperty Name="DEPARTMENT">
+        <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENT_DEPARTMENTID" />
+      </EndProperty>
+      <EndProperty Name="DOCTORMODEL">
+        <ScalarProperty Name="DOCTORID" ColumnName="DOCTORID" />
+      </EndProperty>
+    </AssociationSetMapping>
+  </EntityContainerMapping>
+</Mapping></edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <edmx:Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </edmx:Connection>
+    <edmx:Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="False" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+        <DesignerProperty Name="UseLegacyProvider" Value="False" />
+      </DesignerInfoPropertySet>
+    </edmx:Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>
