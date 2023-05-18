@@ -9,11 +9,16 @@
 
 
 
-<h3 class="text-center">Management</h3>
-<div>
-    <div id="table-list-doctor" style="z-index:-99 ;"  class="justify-content-center position-absolute bg-white">
-        <div class="row position-relative w-100">
+<h3 class="text-center mt-2 font-weight-bold">Doctor Management</h3>
+
+<hr />
+
+<div class="">
+    <div id="l-form-doctor" style="z-index: -9; " class="container justify-content-center position-absolute bg-white">
+        <div class="row  justify-content-center">
+           
             <div class="col-8">
+                <h4 class="text-center">Create Doctor</h4>
                 <form class="form-group">
                     <div class="form-group">
                         <label for="doctorname" class="control-label">Doctor Name</label>
@@ -53,24 +58,34 @@
                         <label for="workingenddate" class="control-label">Working end date</label>
                         <input type="date" class="form-control" id="workingenddate">
                     </div>
+                    <div class="form-group text-center">
+
+                        <btn class="btn btn-primary"> Create </btn>
+                        <btn id="btn-close-form" class="btn btn-secondary"> Cancel </btn>
+                    </div>
+
                 </form>
             </div>
         </div>
-       
+
+    </div>
+
+    <div id="table-list-doctor" style="z-index:99 ;  " class="justify-content-center position-absolute bg-white">
+        <div class=" container " style=" margin-left:-5%">
+            <btn id="btn-open-form" class=" btn btn-sm btn-primary mb-3 "> Add Doctor </btn>
+            <div class="row">
+                
+                <table id="DoctorTable" class="display w-100">
+                </table>
+            </div>
+        </div>
 
     </div>
 
 
-    <div id="l-form-doctor" style="z-index:99 ;" class="position-absolute bg-white">
-        <table id="DoctorTable" class="display">
-        </table>
-    </div>
+   
 
 </div>
-
-
-
-
 
 
 
@@ -79,7 +94,30 @@
 
 
     <script>
+
+        function setbtnonffoform() {
+            $("#l-form-doctor").hide();
+            $("#table-list-doctor").show();
+
+            $("#btn-close-form").on("click", function () {
+                $("#l-form-doctor").hide();
+                $("#table-list-doctor").show();
+            });
+
+            $("#btn-open-form").on("click", function () {
+                $("#l-form-doctor").show();
+                $("#table-list-doctor").hide();
+            });
+        }
+
+        
+
+
         $(document).ready(function () {
+
+            setbtnonffoform();
+
+
 
             $('#DoctorTable').DataTable({
 
