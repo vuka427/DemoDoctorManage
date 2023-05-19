@@ -14,9 +14,12 @@
 <hr />
 
 <div class="">
-    <div id="l-form-doctor" style="z-index: -9; " class="container justify-content-center position-absolute bg-white">
+    <div id="l-form-doctor" style=" " class="container justify-content-center position-absolute bg-white">
+        <div id="error-message">
+
+        </div>
         <div class="row  justify-content-center">
-           
+
             <div class="col-8">
                 <h4 class="text-center">Create Doctor</h4>
                 <form class="form-group">
@@ -24,23 +27,31 @@
                         <label for="doctorname" class="control-label">Doctor Name</label>
                         <input type="text" class="form-control" id="doctorname" placeholder="Doctor name">
                     </div>
+                    <div class="form-group">
+                        <label for="department" class="control-label">Department</label>
 
+                        @Html.DropDownList("Department",
+                             ViewBag.department as SelectList,
+                             new { @class = "form-control", @id = "department" })
+
+
+                    </div>
                     <label for="" class="control-label">Gender</label>
                     <div class="form-group form-check">
-                        <input class="form-check-input" type="radio" name="gender" id="Radios1" value="Male" checked>
+                        <input class="form-check-input radio-gender" type="radio" name="gender" id="Radios1" value="Male" checked>
                         <label class="form-check-label" for="Radios1">
                             Male
                         </label>
                     </div>
                     <div class="form-group form-check">
-                        <input class="form-check-input" type="radio" name="gender" id="Radios2" value="Female">
+                        <input class="form-check-input radio-gender" type="radio" name="gender" id="Radios2" value="Female">
                         <label class="form-check-label" for="eRadios2">
                             Female
                         </label>
                     </div>
                     <div class="form-group">
                         <label for="brithofdate" class="control-label">Brith of date</label>
-                        <input type="date" class="form-control" id="brithofdate">
+                        <input type="date" class="form-control" id="brithofdate" value="2000-01-01">
                     </div>
                     <div class="form-group">
                         <label for="mobile" class="control-label">Mobile No</label>
@@ -52,15 +63,14 @@
                     </div>
                     <div class="form-group">
                         <label for="workingstartdate" class="control-label">Working start date</label>
-                        <input type="date" class="form-control" id="workingstartdate">
+                        <input type="date" class="form-control" id="workingstartdate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="form-group">
                         <label for="workingenddate" class="control-label">Working end date</label>
-                        <input type="date" class="form-control" id="workingenddate">
+                        <input type="date" class="form-control" id="workingenddate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
                     </div>
                     <div class="form-group text-center">
-
-                        <btn class="btn btn-primary"> Create </btn>
+                        <input type="submit" class="btn btn-primary" value="Create">
                         <btn id="btn-close-form" class="btn btn-secondary"> Cancel </btn>
                     </div>
 
@@ -70,12 +80,13 @@
 
     </div>
 
-    <div id="table-list-doctor" style="z-index:99 ;  " class="justify-content-center position-absolute bg-white">
-        <div class=" container " style=" margin-left:-5%">
+    <div id="table-list-doctor" style=" " class="justify-content-center position-absolute bg-white">
+
+        <div class=" container " style=" margin-left: -5%; ">
             <btn id="btn-open-form" class=" btn btn-sm btn-primary mb-3 "> Add Doctor </btn>
             <div class="row">
-                
-                <table id="DoctorTable" class="display w-100">
+
+                <table id="DoctorTable" class="display">
                 </table>
             </div>
         </div>
@@ -83,8 +94,32 @@
     </div>
 
 
-   
+</div>
 
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accept-delete-doctor">
+    Launch demo modal
+</button>
+
+<!-- Modal -->
+<div class="modal fade" id="accept-delete-doctor" tabindex="-1" role="dialog" aria-labelledby="accept-delete-doctorTitle" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="accept-delete-doctorTitle">Delete doctor ?</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                hehe !
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
+
+            </div>
+        </div>
+    </div>
 </div>
 
 
@@ -94,6 +129,7 @@
 
 
     <script>
+
 
         function setbtnonffoform() {
             $("#l-form-doctor").hide();
@@ -108,15 +144,106 @@
                 $("#l-form-doctor").show();
                 $("#table-list-doctor").hide();
             });
+        } //show on off form
+
+
+        function setSubmitFormByAjax() {
+            $("form").submit(function (event) {
+                var gender = $(".radio-gender:checked").val();
+
+                var formData = {
+
+                    DOCTORNAME : $("#doctorname").val(),
+                    DOCTORGENDER: gender ,
+                    DOCTORADDRESS : $("#address").val(),
+                    DEPARTMENTID: $("#department").val(),
+                    DOCTORDATEOFBIRTH : $("#brithofdate").val(),
+                    DOCTORMOBILENO : $("#mobile").val(),
+                    WORKINGENDDATE  :$("#workingenddate").val(),
+                    WORKINGSTARTDATE : $("#workingstartdate").val(),
+
+                };
+                console.log($("#doctorname").val());
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CreateDoctor", "DoctorManage")",
+                    data: formData,
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    console.log(data);
+                    if (data.error == 1) { showMessage(data.msg); }
+                    if (data.error == 0) {
+                        $('#DoctorTable').DataTable().ajax.reload();
+
+                        $("#l-form-doctor").hide();
+                        $("#table-list-doctor").show();
+
+                    }
+                });
+
+                event.preventDefault();
+            });
         }
 
-        
+        function showMessage(msg) {
+            var html = "<div class=\"alert alert-warning alert-dismissible fade show\" role = \"alert\" >"
+                +"<strong>"+msg+"</strong> "
+                +"<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">"
+                +"<span aria-hidden=\"true\">&times;</span></button></div >";
+            console.log(msg);
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            $("#error-message").append(html);
 
+        }
+
+        function SetEventDeleteDoctorFoBtn() {
+            var table = $('#DoctorTable').DataTable();
+
+            table.on('draw',function () {
+
+
+                $(".btn-delete-doctor").on("click", function () {
+                    var Button = $(this);
+
+                    var id = Button.data("id");
+                   
+                });
+
+            });
+
+        }
+
+        function DeleteDocTorByAjax(doctorid) {
+
+            var formData = {
+                DoctorId: doctorid,
+            };
+
+            $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("CreateDoctor", "DoctorManage")",
+                    data: formData,
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    console.log(data);
+                    if (data.error == 1) {
+
+                    }
+                    if (data.error == 0) {
+                        $('#DoctorTable').DataTable().ajax.reload();
+
+                    }
+                });
+        }
 
         $(document).ready(function () {
 
-            setbtnonffoform();
 
+            setbtnonffoform();
+            setSubmitFormByAjax();
 
 
             $('#DoctorTable').DataTable({
@@ -138,14 +265,14 @@
                         "title": 'ID',
                         "autoWidth": true,
                         "searchable": true
-                        
+
                     },
                     {
                         "data": "DOCTORNAME",
                         "title": "Name",
                         "autoWidth": true,
                         "searchable": true
-                        
+
                     },
                     {
                         "data": "DOCTORGENDER",
@@ -211,10 +338,18 @@
                         "autoWidth": true,
                         "searchable": true
                     },
+                    {
+                        "data": "BTNDELETE",
+                        "title": "Task",
+                        "autoWidth": true,
+                        "searchable": true,
+
+                    },
                 ]
 
             });
 
+            SetEventDeleteDoctorFoBtn();
         });
 
     </script>

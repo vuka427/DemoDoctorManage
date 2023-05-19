@@ -30,6 +30,17 @@ namespace DoctorManage.Services
                 .ForMember(dest => dest.UPDATEDATE, act => act.MapFrom(src => src.UPDATEDATE.ToShortDateString()))
                   ;
 
+                cfg.CreateMap<DoctorViewModel, DOCTORMODEL>()
+
+                .ForMember(dest => dest.DOCTORGENDER, act => act.MapFrom(src => src.DOCTORGENDER ==  "Male" ? true : false))
+                .ForMember(dest => dest.DEPARTMENTID, act => act.MapFrom(src => src.DEPARTMENTID))
+                .ForMember(dest => dest.DOCTORDATEOFBIRTH, act => act.MapFrom(src => src.DOCTORDATEOFBIRTH))
+                .ForMember(dest => dest.WORKINGENDDATE, act => act.MapFrom(src => src.WORKINGENDDATE))
+                .ForMember(dest => dest.WORKINGSTARTDATE, act => act.MapFrom(src => src.WORKINGSTARTDATE))
+                .ForMember(dest => dest.CREATEDATE, act => act.MapFrom(src => src.CREATEDATE))
+                .ForMember(dest => dest.UPDATEDATE, act => act.MapFrom(src => src.UPDATEDATE))
+                  ;
+
             });
 
             var mapper = new Mapper(config);

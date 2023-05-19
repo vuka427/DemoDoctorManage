@@ -6,7 +6,9 @@ using DoctorManage.Services;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Data.Entity;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -25,29 +27,10 @@ namespace DoctorManage.Controllers
         // GET: DoctorManage
         public ActionResult Index()
         {
-            var date = DateTime.Now;
-            var dt = new List<DOCTORMODEL>();
-            var de = _dbContext.DEPARTMENT.FirstOrDefault();
+            
 
-            dt.Add(new DOCTORMODEL()
-            {
-                DOCTORNAME = "Bác sĩ B",
-                DEPARTMENTID = 1,
-                DEPARTMENT = de,
-                DOCTORADDRESS = "Cần thơ",
-                DOCTORGENDER = true,
-                DOCTORDATEOFBIRTH = date,
-                DOCTORMOBILENO = "0123456789",
-                WORKINGENDDATE = date,
-                WORKINGSTARTDATE = date,
-                CREATEBY = "vũ",
-                CREATEDATE = date,
-                UPDATEBY = "vũ",
-                UPDATEDATE = date,
-            }); ;
+            ViewBag.department = new SelectList(_dbContext.DEPARTMENT.ToList(), "DEPARTMENTID", "DEPARTMENTNAME");
 
-            // _dbContext.DOCTOR.AddRange(dt);
-            //_dbContext.SaveChanges();
 
             return View();
         }
@@ -55,11 +38,8 @@ namespace DoctorManage.Controllers
         public ActionResult LoadDoctorData(JqueryDatatableParam param)
         {
            var mapper = MapperServices.InitializeAutomapper();
-            var doctor =_dbContext.DOCTOR.Include("DEPARTMENT").ToList();
+            var doctor =_dbContext.DOCTOR.Where(d=> d.DELETEFLAG == false).Include("DEPARTMENT").ToList();
             IEnumerable<DoctorViewModel> Doctors = doctor.Select(dt => mapper.Map<DOCTORMODEL, DoctorViewModel>(dt)).ToList();
-
-
-
 
 
             if (!string.IsNullOrEmpty(param.sSearch)) //tìm kiếm
@@ -112,13 +92,21 @@ namespace DoctorManage.Controllers
                                                            e.UPDATEBY;//11
 
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(orderingFunction) : Doctors.OrderByDescending(orderingFunction);
-
+                //asc tăng dần  
             }
 
 
-            var displayResult = Doctors.Skip(param.iDisplayStart)
+            var displayResult = Doctors.Skip(param.iDisplayStart) 
                 .Take(param.iDisplayLength).ToList();
             var totalRecords = Doctors.Count();
+            displayResult.ForEach(item =>
+            {
+                item.BTNDELETE = $"<btn class=\"btn-delete-doctor btn btn-sm btn-danger\" data-id=\"{item.DOCTORID}\" data-toggle=\"modal\" data-target=\"#accept-delete-doctor\"> Delete </btn>";
+            });
+
+            
+
+
 
             return Json(new
             {
@@ -128,6 +116,65 @@ namespace DoctorManage.Controllers
                 aaData = displayResult
             }, JsonRequestBehavior.AllowGet);
 
+        }
+
+        [HttpPost]
+        public JsonResult CreateDoctor( DoctorViewModel model )
+        {
+            
+
+            if (String.IsNullOrEmpty(model.DOCTORNAME))
+            {
+                
+                return Json(new { error = 1, msg =  "Doctor name is not null !"});
+            }
+            if (String.IsNullOrEmpty(model.DOCTORGENDER) && (model.DOCTORGENDER != "Male" || model.DOCTORGENDER != "Female"))
+            {
+                
+                return Json(new { error = 1, msg =  "Gender not match!"});
+            }
+
+            if (!String.IsNullOrEmpty(model.DOCTORMOBILENO))
+
+                {string patternMobile = @"(84|0[3|5|7|8|9])+([0-9]{8})\b";
+                Match m = Regex.Match(model.DOCTORMOBILENO, patternMobile, RegexOptions.IgnoreCase);
+            
+                if (!m.Success) //mobile
+                {
+                    return Json(new { error = 1, msg = $"Mobile No error !" });
+                }  
+            }
+            else
+            {
+                return Json(new { error = 1, msg = "Mobile No is not null !" });
+
+            }
+            if (String.IsNullOrEmpty(model.DOCTORADDRESS))
+            {
+
+                return Json(new { error = 1, msg = "Address is not null !" });
+            }
+
+            var mapper = MapperServices.InitializeAutomapper();
+            DOCTORMODEL Doctors = mapper.Map<DoctorViewModel, DOCTORMODEL>(model);
+
+          
+            
+            var department = _dbContext.DEPARTMENT.Find(Doctors.DEPARTMENTID);
+            if(department == null) { return Json(new { error = 1, msg = "Error ! Can`t find Department !" }); }
+            Doctors.DEPARTMENT = department;
+
+            var date = DateTime.Now;
+            Doctors.CREATEBY = "vũ";
+            Doctors.CREATEDATE = date;
+            Doctors.UPDATEBY = "vũ";
+            Doctors.UPDATEDATE = date;
+
+            _dbContext.DOCTOR.Add(Doctors);
+            _dbContext.SaveChanges();
+
+
+            return Json(new {error = 0 , msg =""});
         }
     }
 }
