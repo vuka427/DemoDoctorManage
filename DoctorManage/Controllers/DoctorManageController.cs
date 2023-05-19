@@ -28,10 +28,7 @@ namespace DoctorManage.Controllers
         // GET: DoctorManage
         public ActionResult Index()
         {
-            
-
             ViewBag.department = new SelectList(_dbContext.DEPARTMENT.ToList(), "DEPARTMENTID", "DEPARTMENTNAME");
-
 
             return View();
         }
@@ -237,20 +234,34 @@ namespace DoctorManage.Controllers
             var mapper = MapperServices.InitializeAutomapper();
             DOCTORMODEL Doctors = mapper.Map<DoctorViewModel, DOCTORMODEL>(model);
 
-
+            var Olddoctor = _dbContext.DOCTOR.Find(Doctors.DOCTORID);
+            
+            if(Olddoctor == null)
+            {
+                return Json(new { error = 1, msg = "Can`t find doctor !" });
+            }
 
             var department = _dbContext.DEPARTMENT.Find(Doctors.DEPARTMENTID);
             if (department == null) { return Json(new { error = 1, msg = "Error ! Can`t find Department !" }); }
+
             Doctors.DEPARTMENT = department;
 
             var date = DateTime.Now;
-            Doctors.CREATEBY = "vũ";
-            Doctors.CREATEDATE = date;
+            Doctors.CREATEBY = Olddoctor.CREATEBY;
+            Doctors.CREATEDATE = Olddoctor.CREATEDATE;
             Doctors.UPDATEBY = "vũ";
             Doctors.UPDATEDATE = date;
+            try
+            {
+                _dbContext.DEPARTMENT.AddOrUpdate(department);
+                _dbContext.DOCTOR.AddOrUpdate(Doctors);
+                _dbContext.SaveChanges();
 
-            //_dbContext.DOCTOR.Add(Doctors);
-           // _dbContext.SaveChanges();
+            }catch(Exception ex)
+            {
+                return Json(new { error = 1, msg = "Can`t update doctor !" });
+            }
+            
 
 
             return Json(new { error = 0, msg = "" });
@@ -258,6 +269,7 @@ namespace DoctorManage.Controllers
 
 
         [HttpPost]
+        //load doctor data for edit
         public JsonResult LoadDoctor(int DoctorId)
         {
             if (DoctorId == 0)

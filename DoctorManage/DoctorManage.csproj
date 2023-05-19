@@ -151,6 +151,7 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\UnityConfig.cs" />
+    <Compile Include="Controllers\DEPARTMENTController.cs" />
     <Compile Include="Controllers\DoctorManageController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Global.asax.cs">
@@ -280,6 +281,11 @@
     <Content Include="Scripts\popper.js.map" />
     <Content Include="Scripts\popper-utils.min.js.map" />
     <Content Include="Scripts\popper-utils.js.map" />
+    <Content Include="Views\DEPARTMENT\Create.cshtml" />
+    <Content Include="Views\DEPARTMENT\Delete.cshtml" />
+    <Content Include="Views\DEPARTMENT\Details.cshtml" />
+    <Content Include="Views\DEPARTMENT\Edit.cshtml" />
+    <Content Include="Views\DEPARTMENT\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

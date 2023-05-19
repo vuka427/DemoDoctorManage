@@ -46,6 +46,7 @@ namespace DoctorManage.Services
                 .ForMember(dest => dest.DOCTORDATEOFBIRTH, act => act.MapFrom(src => src.DOCTORDATEOFBIRTH.ToString("yyyy-MM-dd")))
                 .ForMember(dest => dest.WORKINGENDDATE, act => act.MapFrom(src => src.WORKINGENDDATE.ToString("yyyy-MM-dd")))
                 .ForMember(dest => dest.WORKINGSTARTDATE, act => act.MapFrom(src => src.WORKINGSTARTDATE.ToString("yyyy-MM-dd")))
+                .ForMember(dest => dest.DOCTORGENDER, act => act.MapFrom(src => src.DOCTORGENDER == true ? "Male" : "Female"))
                 ;
 
             });

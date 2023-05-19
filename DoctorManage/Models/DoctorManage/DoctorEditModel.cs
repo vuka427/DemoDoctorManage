@@ -10,7 +10,7 @@ namespace DoctorManage.Models.DoctorManage
         public int DOCTORID { get; set; }
         public int DEPARTMENTID { get; set; }
         public string DOCTORNAME { get; set; }
-        public bool DOCTORGENDER { get; set; }
+        public string DOCTORGENDER { get; set; }
         public string DOCTORDATEOFBIRTH { get; set; }
         public string DOCTORMOBILENO { get; set; }
         public string DOCTORADDRESS { get; set; }

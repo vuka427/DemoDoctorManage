@@ -1,0 +1,64 @@
+﻿@model IEnumerable<DoctorManage.Models.Database.DEPARTMENT>
+
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2>Index</h2>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.DEPARTMENTNAME)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CREATEBY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CREATEDATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UPDATEBY)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.UPDATEDATE)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DELETEFLAG)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.DEPARTMENTNAME)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CREATEBY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.CREATEDATE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UPDATEBY)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.UPDATEDATE)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DELETEFLAG)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.DEPARTMENTID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DEPARTMENTID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DEPARTMENTID })
+        </td>
+    </tr>
+}
+
+</table>

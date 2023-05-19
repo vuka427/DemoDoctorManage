@@ -103,7 +103,7 @@
                 <form id="form-edit-doctor" class="form-group">
                     <div class="form-group">
                         
-                        <input type="text" class="form-control" id="udoctorid" >
+                        <input type="text" class="form-control" hidden id="udoctorid" >
                     </div>
                     <div class="form-group">
                         <label for="udoctorname" class="control-label">Doctor Name</label>
@@ -114,12 +114,12 @@
 
                         @Html.DropDownList("Department",
                              ViewBag.department as SelectList,
-                             new { @class = "form-control", @id = "department" })
+                             new { @class = "form-control", @id = "udepartment" })
 
                     </div>
                     <label for="" class="control-label">Gender</label>
                     <div class="form-group form-check">
-                        <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios1" value="Male" checked>
+                        <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios1" value="Male">
                         <label class="form-check-label" for="uRadios1">
                             Male
                         </label>
@@ -152,7 +152,7 @@
                     </div>
                     <div class="form-group text-center">
                         <input type="submit" class="btn btn-primary" value="Update">
-                        <btn id="btn-close-form-update" class="btn btn-secondary"> Cancel </btn>
+                        <btn id="btn-close-form-update" class="btn btn-secondary">Cancel</btn>
                     </div>
                 </form>
             </div>
@@ -270,7 +270,7 @@
                 var gender = $(".uradio-gender:checked").val();
 
                 var formData = {
-
+                    DOCTORID: $("#udoctorid").val(),
                     DOCTORNAME : $("#udoctorname").val(),
                     DOCTORGENDER: gender ,
                     DOCTORADDRESS : $("#uaddress").val(),
@@ -401,22 +401,23 @@
                     if (data.error == 0) {
 
                         console.log(data.doctor);
-                        
                         $("#udoctorid").val(data.doctor.DOCTORID);
                         $("#udoctorname").val(data.doctor.DOCTORNAME);  
                         $("#uaddress").val(data.doctor.DOCTORADDRESS);
-                        $("#udepartment").val(data.doctor.DEPARTMENTID);
+                        $("#udepartment").val(String(data.doctor.DEPARTMENTID));
                         $("#ubrithofdate").val(data.doctor.DOCTORDATEOFBIRTH);
                         $("#umobile").val(data.doctor.DOCTORMOBILENO);
                         $("#uworkingenddate").val(data.doctor.WORKINGSTARTDATE);
                         $("#uworkingstartdate").val(data.doctor.WORKINGENDDATE);
+
+                        $("[name=ugender]").val([data.doctor.DOCTORGENDER]);
+                        
 
                     }
              });
 
 
         }
-
 
         // ajax delete doctor
         function DeleteDocTorByAjax(doctorid) {
