@@ -41,6 +41,13 @@ namespace DoctorManage.Services
                 .ForMember(dest => dest.UPDATEDATE, act => act.MapFrom(src => src.UPDATEDATE))
                   ;
 
+
+                cfg.CreateMap<DOCTORMODEL, DoctorEditModel>()
+                .ForMember(dest => dest.DOCTORDATEOFBIRTH, act => act.MapFrom(src => src.DOCTORDATEOFBIRTH.ToString("yyyy-MM-dd")))
+                .ForMember(dest => dest.WORKINGENDDATE, act => act.MapFrom(src => src.WORKINGENDDATE.ToString("yyyy-MM-dd")))
+                .ForMember(dest => dest.WORKINGSTARTDATE, act => act.MapFrom(src => src.WORKINGSTARTDATE.ToString("yyyy-MM-dd")))
+                ;
+
             });
 
             var mapper = new Mapper(config);

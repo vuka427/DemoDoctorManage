@@ -178,6 +178,7 @@
       <DependentUpon>DoctorDb.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\DataTableModel\JqueryDatatableParam.cs" />
+    <Compile Include="Models\DoctorManage\DoctorEditModel.cs" />
     <Compile Include="Models\DoctorManage\DoctorViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\MapperServices.cs" />

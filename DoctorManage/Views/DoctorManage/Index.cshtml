@@ -14,6 +14,7 @@
 <hr />
 
 <div class="">
+    @* Create doctor *@
     <div id="l-form-doctor" style=" " class="container justify-content-center position-absolute bg-white">
         <div id="error-message">
 
@@ -22,7 +23,7 @@
 
             <div class="col-8">
                 <h4 class="text-center">Create Doctor</h4>
-                <form class="form-group">
+                <form id="form-create-doctor" class="form-group">
                     <div class="form-group">
                         <label for="doctorname" class="control-label">Doctor Name</label>
                         <input type="text" class="form-control" id="doctorname" placeholder="Doctor name">
@@ -50,7 +51,7 @@
                         </label>
                     </div>
                     <div class="form-group">
-                        <label for="brithofdate" class="control-label">Brith of date</label>
+                        <label for="brithofdate" class="control-label">Date of birth</label>
                         <input type="date" class="form-control" id="brithofdate" value="2000-01-01">
                     </div>
                     <div class="form-group">
@@ -79,9 +80,8 @@
         </div>
 
     </div>
-
+    @* index doctor *@
     <div id="table-list-doctor" style=" " class="justify-content-center position-absolute bg-white">
-
         <div class=" container " style=" margin-left: -5%; ">
             <btn id="btn-open-form" class=" btn btn-sm btn-primary mb-3 "> Add Doctor </btn>
             <div class="row">
@@ -92,13 +92,75 @@
         </div>
 
     </div>
+    @* Update doctor *@
+    <div id="form-update-doctor" style=" " class="container justify-content-center position-absolute bg-white">
+        <div id="error-message-update">
 
+        </div>
+        <div class="row  justify-content-center">
+            <div class="col-8">
+                <h4 class="text-center">Update Doctor</h4>
+                <form id="form-edit-doctor" class="form-group">
+                    <div class="form-group">
+                        
+                        <input type="text" class="form-control" id="udoctorid" >
+                    </div>
+                    <div class="form-group">
+                        <label for="udoctorname" class="control-label">Doctor Name</label>
+                        <input type="text" class="form-control" id="udoctorname" placeholder="Doctor name">
+                    </div>
+                    <div class="form-group">
+                        <label for="department" class="control-label">Department</label>
 
+                        @Html.DropDownList("Department",
+                             ViewBag.department as SelectList,
+                             new { @class = "form-control", @id = "department" })
+
+                    </div>
+                    <label for="" class="control-label">Gender</label>
+                    <div class="form-group form-check">
+                        <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios1" value="Male" checked>
+                        <label class="form-check-label" for="uRadios1">
+                            Male
+                        </label>
+                    </div>
+                    <div class="form-group form-check">
+                        <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios2" value="Female">
+                        <label class="form-check-label" for="uRadios2">
+                            Female
+                        </label>
+                    </div>
+                    <div class="form-group">
+                        <label for="ubrithofdate" class="control-label">Date of birth</label>
+                        <input type="date" class="form-control" id="ubrithofdate" value="2000-01-01">
+                    </div>
+                    <div class="form-group">
+                        <label for="umobile" class="control-label">Mobile No</label>
+                        <input type="text" class="form-control" id="umobile" placeholder="...">
+                    </div>
+                    <div class="form-group">
+                        <label for="uaddress" class="control-label">Address</label>
+                        <textarea type="date" rows="4" class="form-control" id="uaddress" placeholder="..."></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="uworkingstartdate" class="control-label">Working start date</label>
+                        <input type="date" class="form-control" id="uworkingstartdate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group">
+                        <label for="uworkingenddate" class="control-label">Working end date</label>
+                        <input type="date" class="form-control" id="uworkingenddate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                    </div>
+                    <div class="form-group text-center">
+                        <input type="submit" class="btn btn-primary" value="Update">
+                        <btn id="btn-close-form-update" class="btn btn-secondary"> Cancel </btn>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 
-<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#accept-delete-doctor">
-    Launch demo modal
-</button>
+
 
 <!-- Modal -->
 <div class="modal fade" id="accept-delete-doctor" tabindex="-1" role="dialog" aria-labelledby="accept-delete-doctorTitle" aria-hidden="true">
@@ -111,10 +173,10 @@
                 </button>
             </div>
             <div class="modal-body">
-                hehe !
+                You want to delete doctor <strong id="doctorname-delete"></strong> ?
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="button" id="btn-accept-delete-doctor" data-dismiss="modal" class="btn btn-danger">Delete</button>
                 <button type="button" class="btn btn-primary" data-dismiss="modal">Cancel</button>
 
             </div>
@@ -133,22 +195,38 @@
 
         function setbtnonffoform() {
             $("#l-form-doctor").hide();
+            $("#form-update-doctor").hide();
             $("#table-list-doctor").show();
-
+            //close form create
             $("#btn-close-form").on("click", function () {
                 $("#l-form-doctor").hide();
                 $("#table-list-doctor").show();
+                $("#form-update-doctor").hide();
             });
-
+            // close from update
+            $("#btn-close-form-update").on("click", function () {
+                $("#l-form-doctor").hide();
+                $("#table-list-doctor").show();
+                $("#form-update-doctor").hide();
+            });
+            //open from create
             $("#btn-open-form").on("click", function () {
                 $("#l-form-doctor").show();
                 $("#table-list-doctor").hide();
+                $("#form-update-doctor").hide();
+            });
+
+            $(".btn-update-doctor").on("click", function () {
+                $("#l-form-doctor").hide();
+                $("#table-list-doctor").hide();
+                $("#form-update-doctor").show();
+
             });
         } //show on off form
 
-
+        //create doctor
         function setSubmitFormByAjax() {
-            $("form").submit(function (event) {
+            $("#form-create-doctor").submit(function (event) {
                 var gender = $(".radio-gender:checked").val();
 
                 var formData = {
@@ -186,6 +264,48 @@
             });
         }
 
+        //Update doctor
+        function setSubmitFormUdateByAjax() {
+            $("#form-edit-doctor").submit(function (event) {
+                var gender = $(".uradio-gender:checked").val();
+
+                var formData = {
+
+                    DOCTORNAME : $("#udoctorname").val(),
+                    DOCTORGENDER: gender ,
+                    DOCTORADDRESS : $("#uaddress").val(),
+                    DEPARTMENTID: $("#udepartment").val(),
+                    DOCTORDATEOFBIRTH : $("#ubrithofdate").val(),
+                    DOCTORMOBILENO : $("#umobile").val(),
+                    WORKINGENDDATE  :$("#uworkingenddate").val(),
+                    WORKINGSTARTDATE : $("#uworkingstartdate").val(),
+
+                };
+                console.log($("#udoctorname").val());
+                $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("UpdateDoctor", "DoctorManage")",
+                    data: formData,
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    console.log(data);
+                    if (data.error == 1) { showMessageFormUpdate(data.msg); }
+                    if (data.error == 0) {
+                        $('#DoctorTable').DataTable().ajax.reload();
+
+                        $("#l-form-doctor").hide();
+                        $("#table-list-doctor").show();
+                        $("#form-update-doctor").hide();
+
+                    }
+                });
+
+                event.preventDefault();
+            });
+        }
+
+        //show message create from
         function showMessage(msg) {
             var html = "<div class=\"alert alert-warning alert-dismissible fade show\" role = \"alert\" >"
                 +"<strong>"+msg+"</strong> "
@@ -197,7 +317,19 @@
             $("#error-message").append(html);
 
         }
+        //show message update from
+        function showMessageFormUpdate(msg) {
+            var html = "<div class=\"alert alert-warning alert-dismissible fade show\" role = \"alert\" >"
+                + "<strong>" + msg + "</strong> "
+                + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">"
+                + "<span aria-hidden=\"true\">&times;</span></button></div >";
+            console.log(msg);
+            document.body.scrollTop = 0; // For Safari
+            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
+            $("#error-message-update").append(html);
 
+        }
+        //show delete dialog
         function SetEventDeleteDoctorFoBtn() {
             var table = $('#DoctorTable').DataTable();
 
@@ -206,15 +338,87 @@
 
                 $(".btn-delete-doctor").on("click", function () {
                     var Button = $(this);
-
+                    var ButtonAccept = $("#btn-accept-delete-doctor");
+                    var doctorname = Button.data("doctorname");
                     var id = Button.data("id");
-                   
+                    ButtonAccept.attr("data-id", id);
+                    $("#doctorname-delete").html(doctorname);
                 });
 
             });
 
+            $("#btn-accept-delete-doctor").on("click", function () {
+                var Button = $(this);
+                var ButtonAccept = $("");
+
+                var id = Button.attr("data-id");
+                DeleteDocTorByAjax(id);
+            });
+
+        }
+        //show edit from
+        function SetEventUpdateDoctorFoBtn() {
+            var table = $('#DoctorTable').DataTable();
+
+            table.on('draw', function () {
+
+                $(".btn-update-doctor").on("click", function () {
+                    $("#l-form-doctor").hide();
+                    $("#table-list-doctor").hide();
+                    $("#form-update-doctor").show();
+
+                    var Button = $(this);
+                    var id = Button.data("id");
+                    console.log(id);
+                    LoadDataToForm(id);
+
+                });
+
+            });
+
+
+
+
+
+
+        }
+        // load data to form edit
+        function LoadDataToForm(doctorid) {
+
+            var formData = {
+                DoctorId: doctorid,
+            };
+
+            $.ajax({
+                    type: "POST",
+                    url: "@Url.Action("LoadDoctor", "DoctorManage")",
+                    data: formData,
+                    dataType: "json",
+                    encode: true,
+                }).done(function (data) {
+                    console.log(data);
+                    if (data.error == 1) { showMessageFormUpdate(data.msg); }
+                    if (data.error == 0) {
+
+                        console.log(data.doctor);
+                        
+                        $("#udoctorid").val(data.doctor.DOCTORID);
+                        $("#udoctorname").val(data.doctor.DOCTORNAME);  
+                        $("#uaddress").val(data.doctor.DOCTORADDRESS);
+                        $("#udepartment").val(data.doctor.DEPARTMENTID);
+                        $("#ubrithofdate").val(data.doctor.DOCTORDATEOFBIRTH);
+                        $("#umobile").val(data.doctor.DOCTORMOBILENO);
+                        $("#uworkingenddate").val(data.doctor.WORKINGSTARTDATE);
+                        $("#uworkingstartdate").val(data.doctor.WORKINGENDDATE);
+
+                    }
+             });
+
+
         }
 
+
+        // ajax delete doctor
         function DeleteDocTorByAjax(doctorid) {
 
             var formData = {
@@ -223,7 +427,7 @@
 
             $.ajax({
                     type: "POST",
-                    url: "@Url.Action("CreateDoctor", "DoctorManage")",
+                    url: "@Url.Action("DeleteDoctor", "DoctorManage")",
                     data: formData,
                     dataType: "json",
                     encode: true,
@@ -239,11 +443,12 @@
                 });
         }
 
+
+
         $(document).ready(function () {
-
-
             setbtnonffoform();
             setSubmitFormByAjax();
+            setSubmitFormUdateByAjax();
 
 
             $('#DoctorTable').DataTable({
@@ -349,6 +554,8 @@
 
             });
 
+
+            SetEventUpdateDoctorFoBtn();
             SetEventDeleteDoctorFoBtn();
         });
 

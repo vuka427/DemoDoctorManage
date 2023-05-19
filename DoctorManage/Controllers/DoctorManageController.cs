@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Text.RegularExpressions;
 using System.Web;
@@ -101,12 +102,9 @@ namespace DoctorManage.Controllers
             var totalRecords = Doctors.Count();
             displayResult.ForEach(item =>
             {
-                item.BTNDELETE = $"<btn class=\"btn-delete-doctor btn btn-sm btn-danger\" data-id=\"{item.DOCTORID}\" data-toggle=\"modal\" data-target=\"#accept-delete-doctor\"> Delete </btn>";
+                item.BTNDELETE = $"<btn class=\"btn-delete-doctor btn btn-sm btn-danger\" data-id=\"{item.DOCTORID}\" data-doctorname=\"{item.DOCTORNAME}\" data-toggle=\"modal\" data-target=\"#accept-delete-doctor\"> Delete </btn>" +
+                                 $"<btn class=\"btn-update-doctor btn btn-sm btn-primary mt-2\" data-id=\"{item.DOCTORID}\" data-doctorname=\"{item.DOCTORNAME}\" > Edit </btn>";
             });
-
-            
-
-
 
             return Json(new
             {
@@ -176,5 +174,109 @@ namespace DoctorManage.Controllers
 
             return Json(new {error = 0 , msg =""});
         }
+
+        [HttpPost]
+        public JsonResult DeleteDoctor(int DoctorId)
+        {
+            if(DoctorId == 0)
+            {
+                return Json(new { error = 1, msg = "Error! do not delete doctor !" });
+            }
+            var doctor = _dbContext.DOCTOR.Find(DoctorId);
+            if (doctor == null)
+            {
+                return Json(new { error = 1, msg = "Error! do not find doctor !" });
+            }
+
+            doctor.DELETEFLAG = true;
+
+            _dbContext.DOCTOR.AddOrUpdate(doctor);
+            _dbContext.SaveChanges();
+
+            return Json(new { error = 0, msg = "ok" });
+        }
+
+        [HttpPost]
+        public JsonResult UpdateDoctor(DoctorViewModel model)
+        {
+
+
+            if (String.IsNullOrEmpty(model.DOCTORNAME))
+            {
+
+                return Json(new { error = 1, msg = "Doctor name is not null !" });
+            }
+            if (String.IsNullOrEmpty(model.DOCTORGENDER) && (model.DOCTORGENDER != "Male" || model.DOCTORGENDER != "Female"))
+            {
+
+                return Json(new { error = 1, msg = "Gender not match!" });
+            }
+
+            if (!String.IsNullOrEmpty(model.DOCTORMOBILENO))
+
+            {
+                string patternMobile = @"(84|0[3|5|7|8|9])+([0-9]{8})\b";
+                Match m = Regex.Match(model.DOCTORMOBILENO, patternMobile, RegexOptions.IgnoreCase);
+
+                if (!m.Success) //mobile
+                {
+                    return Json(new { error = 1, msg = $"Mobile No error !" });
+                }
+            }
+            else
+            {
+                return Json(new { error = 1, msg = "Mobile No is not null !" });
+
+            }
+            if (String.IsNullOrEmpty(model.DOCTORADDRESS))
+            {
+
+                return Json(new { error = 1, msg = "Address is not null !" });
+            }
+
+            var mapper = MapperServices.InitializeAutomapper();
+            DOCTORMODEL Doctors = mapper.Map<DoctorViewModel, DOCTORMODEL>(model);
+
+
+
+            var department = _dbContext.DEPARTMENT.Find(Doctors.DEPARTMENTID);
+            if (department == null) { return Json(new { error = 1, msg = "Error ! Can`t find Department !" }); }
+            Doctors.DEPARTMENT = department;
+
+            var date = DateTime.Now;
+            Doctors.CREATEBY = "vũ";
+            Doctors.CREATEDATE = date;
+            Doctors.UPDATEBY = "vũ";
+            Doctors.UPDATEDATE = date;
+
+            //_dbContext.DOCTOR.Add(Doctors);
+           // _dbContext.SaveChanges();
+
+
+            return Json(new { error = 0, msg = "" });
+        }
+
+
+        [HttpPost]
+        public JsonResult LoadDoctor(int DoctorId)
+        {
+            if (DoctorId == 0)
+            {
+                return Json(new { error = 1, msg = "Error! do not delete doctor !" });
+            }
+            var doctor = _dbContext.DOCTOR.Find(DoctorId);
+            if (doctor == null)
+            {
+                return Json(new { error = 1, msg = "Error! do not find doctor!" });
+            }
+
+            var mapper = MapperServices.InitializeAutomapper();
+            DoctorEditModel dt = mapper.Map<DOCTORMODEL,DoctorEditModel >(doctor);
+
+            return Json(new { error = 0, msg = "ok" , doctor = dt });
+        }
+
+
+
     }
 }
