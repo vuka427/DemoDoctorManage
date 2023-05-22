@@ -12,147 +12,154 @@
 
 <div class="">
     @* Create doctor *@
-    <div id="l-form-doctor" style=" " class="container justify-content-center position-absolute bg-white">
-        <div id="error-message">
-
-        </div>
+    <div id="l-form-doctor" style=" " class="container justify-content-center  bg-white">
+        <div id="error-message"> </div>
         <div class="row  justify-content-center">
-            <div class="col-8">
-                <h4 class="text-center">Create Doctor</h4>
-                <form id="form-create-doctor" class="form-group">
-                    <div class="form-group">
-                        <label for="doctorname" class="control-label">Doctor Name</label>
-                        <input type="text" class="form-control" id="doctorname" placeholder="Doctor name">
-                    </div>
-                    <div class="form-group">
-                        <label for="department" class="control-label">Department</label>
+            <div class="col-8 card p-0 shadow">
 
-                        @Html.DropDownList("Department",
-                             ViewBag.department as SelectList,
-                             new { @class = "form-control", @id = "department" })
+                <div class="card-header bg-primary ">
+                    <h4 class="text-center text-light">Create Doctor</h4>
+                </div>
+                <div class="card-body">
+                    <form id="form-create-doctor" class="form-group">
+                        <div class="form-group">
+                            <label for="doctorname" class="control-label">Doctor Name</label>
+                            <input type="text" class="form-control" id="doctorname" placeholder="Doctor name">
+                        </div>
+                        <div class="form-group">
+                            <label for="department" class="control-label">Department</label>
 
+                            @Html.DropDownList("Department",
+                                 ViewBag.department as SelectList,
+                                 new { @class = "form-control", @id = "department" })
 
-                    </div>
-                    <label for="" class="control-label">Gender</label>
-                    <div class="form-group form-check">
-                        <input class="form-check-input radio-gender" type="radio" name="gender" id="Radios1" value="Male" checked>
-                        <label class="form-check-label" for="Radios1">
-                            Male
-                        </label>
-                    </div>
-                    <div class="form-group form-check">
-                        <input class="form-check-input radio-gender" type="radio" name="gender" id="Radios2" value="Female">
-                        <label class="form-check-label" for="eRadios2">
-                            Female
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="brithofdate" class="control-label">Date of birth</label>
-                        <input type="date" class="form-control" id="brithofdate" value="2000-01-01">
-                    </div>
-                    <div class="form-group">
-                        <label for="mobile" class="control-label">Mobile No</label>
-                        <input type="text" class="form-control" id="mobile" placeholder="...">
-                    </div>
-                    <div class="form-group">
-                        <label for="address" class="control-label">Address</label>
-                        <textarea type="date" rows="4" class="form-control" id="address" placeholder="..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="workingstartdate" class="control-label">Working start date</label>
-                        <input type="date" class="form-control" id="workingstartdate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
-                    </div>
-                    <div class="form-group">
-                        <label for="workingenddate" class="control-label">Working end date</label>
-                        <input type="date" class="form-control" id="workingenddate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
-                    </div>
-                    <div class="form-group text-center">
-                        <input type="submit" class="btn btn-primary" value="Create">
-                        <btn id="btn-close-form" class="btn btn-secondary"> Cancel </btn>
-                    </div>
+                        </div>
+                        <label for="" class="control-label">Gender</label>
+                        <div class="form-group form-check">
+                            <input class="form-check-input radio-gender" type="radio" name="gender" id="Radios1" value="Male" checked>
+                            <label class="form-check-label" for="Radios1">
+                                Male
+                            </label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input class="form-check-input radio-gender" type="radio" name="gender" id="Radios2" value="Female">
+                            <label class="form-check-label" for="eRadios2">
+                                Female
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="brithofdate" class="control-label">Date of birth</label>
+                            <input type="date" class="form-control" id="brithofdate" value="2000-01-01">
+                        </div>
+                        <div class="form-group">
+                            <label for="mobile" class="control-label">Mobile No</label>
+                            <input type="text" class="form-control" id="mobile" placeholder="...">
+                        </div>
+                        <div class="form-group">
+                            <label for="address" class="control-label">Address</label>
+                            <textarea type="date" rows="4" class="form-control" id="address" placeholder="..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="workingstartdate" class="control-label">Working start date</label>
+                            <input type="date" class="form-control" id="workingstartdate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                        <div class="form-group">
+                            <label for="workingenddate" class="control-label">Working end date</label>
+                            <input type="date" class="form-control" id="workingenddate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                        <div class="form-group text-center">
+                            <input type="submit" class="btn btn-primary" value="Create">
+                            <btn id="btn-close-form" class="btn btn-secondary"> Cancel </btn>
+                        </div>
 
-                </form>
+                    </form>
+                </div>
+
             </div>
         </div>
 
     </div>
     @* index doctor *@
-    <div id="table-list-doctor" style=" " class="container justify-content-center position-absolute bg-white">
-        <div class=" container-fluid " style="width: auto" >
+    <div id="table-list-doctor" style=" " class="container justify-content-center  bg-white">
+        <div class=" container-fluid " style="width: auto">
             <btn id="btn-open-form" class=" btn btn-sm btn-primary mb-3 "> Add Doctor </btn>
             <div class="row">
-                <div class="col-12">
+                <div class="col-12 card shadow p-3">
                     <table id="DoctorTable" class=" dt-responsive  display nowrap" cellspacing="0" width="100%" style=" margin : auto">
                     </table>
                 </div>
             </div>
-           
+
         </div>
 
     </div>
     @* Update doctor *@
-    <div id="form-update-doctor" style=" " class="container justify-content-center position-absolute bg-white">
+    <div id="form-update-doctor" style=" " class="container justify-content-center  bg-white">
         <div id="error-message-update">
 
         </div>
         <div class="row  justify-content-center">
-            <div class="col-8">
-                <h4 class="text-center">Update Doctor</h4>
-                <form id="form-edit-doctor" class="form-group">
-                    <div class="form-group">
-                        
-                        <input type="text" class="form-control" hidden id="udoctorid" >
-                    </div>
-                    <div class="form-group">
-                        <label for="udoctorname" class="control-label">Doctor Name</label>
-                        <input type="text" class="form-control" id="udoctorname" placeholder="Doctor name">
-                    </div>
-                    <div class="form-group">
-                        <label for="department" class="control-label">Department</label>
+            <div class="col-8 card p-0 shadow">
+                <div class="card-header bg-primary">
+                    <h4 class="text-center text-light">Update Doctor</h4>
+                </div>
+                <div class="card-body">
+                    <form id="form-edit-doctor" class="form-group">
+                        <div class="form-group">
 
-                        @Html.DropDownList("Department",
-                             ViewBag.department as SelectList,
-                             new { @class = "form-control", @id = "udepartment" })
+                            <input type="text" class="form-control" hidden id="udoctorid">
+                        </div>
+                        <div class="form-group">
+                            <label for="udoctorname" class="control-label">Doctor Name</label>
+                            <input type="text" class="form-control" id="udoctorname" placeholder="Doctor name">
+                        </div>
+                        <div class="form-group">
+                            <label for="department" class="control-label">Department</label>
 
-                    </div>
-                    <label for="" class="control-label">Gender</label>
-                    <div class="form-group form-check">
-                        <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios1" value="Male">
-                        <label class="form-check-label" for="uRadios1">
-                            Male
-                        </label>
-                    </div>
-                    <div class="form-group form-check">
-                        <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios2" value="Female">
-                        <label class="form-check-label" for="uRadios2">
-                            Female
-                        </label>
-                    </div>
-                    <div class="form-group">
-                        <label for="ubrithofdate" class="control-label">Date of birth</label>
-                        <input type="date" class="form-control" id="ubrithofdate" value="2000-01-01">
-                    </div>
-                    <div class="form-group">
-                        <label for="umobile" class="control-label">Mobile No</label>
-                        <input type="text" class="form-control" id="umobile" placeholder="...">
-                    </div>
-                    <div class="form-group">
-                        <label for="uaddress" class="control-label">Address</label>
-                        <textarea type="date" rows="4" class="form-control" id="uaddress" placeholder="..."></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="uworkingstartdate" class="control-label">Working start date</label>
-                        <input type="date" class="form-control" id="uworkingstartdate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
-                    </div>
-                    <div class="form-group">
-                        <label for="uworkingenddate" class="control-label">Working end date</label>
-                        <input type="date" class="form-control" id="uworkingenddate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
-                    </div>
-                    <div class="form-group text-center">
-                        <input type="submit" class="btn btn-primary" value="Update">
-                        <btn id="btn-close-form-update" class="btn btn-secondary">Cancel</btn>
-                    </div>
-                </form>
+                            @Html.DropDownList("Department",
+                                 ViewBag.department as SelectList,
+                                 new { @class = "form-control", @id = "udepartment" })
+
+                        </div>
+                        <label for="" class="control-label">Gender</label>
+                        <div class="form-group form-check">
+                            <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios1" value="Male">
+                            <label class="form-check-label" for="uRadios1">
+                                Male
+                            </label>
+                        </div>
+                        <div class="form-group form-check">
+                            <input class="form-check-input uradio-gender" type="radio" name="ugender" id="uRadios2" value="Female">
+                            <label class="form-check-label" for="uRadios2">
+                                Female
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="ubrithofdate" class="control-label">Date of birth</label>
+                            <input type="date" class="form-control" id="ubrithofdate" value="2000-01-01">
+                        </div>
+                        <div class="form-group">
+                            <label for="umobile" class="control-label">Mobile No</label>
+                            <input type="text" class="form-control" id="umobile" placeholder="...">
+                        </div>
+                        <div class="form-group">
+                            <label for="uaddress" class="control-label">Address</label>
+                            <textarea type="date" rows="4" class="form-control" id="uaddress" placeholder="..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="uworkingstartdate" class="control-label">Working start date</label>
+                            <input type="date" class="form-control" id="uworkingstartdate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                        <div class="form-group">
+                            <label for="uworkingenddate" class="control-label">Working end date</label>
+                            <input type="date" class="form-control" id="uworkingenddate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
+                        </div>
+                        <div class="form-group text-center">
+                            <input type="submit" class="btn btn-primary" value="Update">
+                            <btn id="btn-close-form-update" class="btn btn-secondary">Cancel</btn>
+                        </div>
+                    </form>
+                </div>
             </div>
         </div>
     </div>
@@ -182,14 +189,32 @@
     </div>
 </div>
 
+<!--Message Modal -->
+<div class="modal fade" id="messageModal" tabindex="-1" role="dialog" aria-labelledby="messageModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="messageModalLabel"></h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+              <p id="messageContent"></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 @section scripts{
 
-
-
     <script>
 
+        
 
         function setbtnonffoform() {
             $("#l-form-doctor").hide();
@@ -221,7 +246,6 @@
 
             });
         } //show on off form
-
         //create doctor
         function setSubmitFormByAjax() {
             $("#form-create-doctor").submit(function (event) {
@@ -237,7 +261,6 @@
                     DOCTORMOBILENO : $("#mobile").val(),
                     WORKINGENDDATE  :$("#workingenddate").val(),
                     WORKINGSTARTDATE : $("#workingstartdate").val(),
-
                 };
                 console.log($("#doctorname").val());
                 $.ajax({
@@ -248,12 +271,15 @@
                     encode: true,
                 }).done(function (data) {
                     console.log(data);
-                    if (data.error == 1) { showMessage(data.msg); }
+                    if (data.error == 1) { showMessage(data.msg , "Error !"); }
                     if (data.error == 0) {
+                        $("#form-create-doctor").trigger('reset'); 
                         $('#DoctorTable').DataTable().ajax.reload();
-
                         $("#l-form-doctor").hide();
                         $("#table-list-doctor").show();
+                        showMessage("Create doctor is success ", "Success !")
+                      
+                        
 
                     }
                 });
@@ -261,7 +287,6 @@
                 event.preventDefault();
             });
         }
-
         //Update doctor
         function setSubmitFormUdateByAjax() {
             $("#form-edit-doctor").submit(function (event) {
@@ -288,13 +313,14 @@
                     encode: true,
                 }).done(function (data) {
                     console.log(data);
-                    if (data.error == 1) { showMessageFormUpdate(data.msg); }
+                    if (data.error == 1) { showMessage(data.msg,"Error !"); }
                     if (data.error == 0) {
                         $('#DoctorTable').DataTable().ajax.reload();
 
                         $("#l-form-doctor").hide();
                         $("#table-list-doctor").show();
                         $("#form-update-doctor").hide();
+                        showMessage("Update doctor is success ", "Success !")
 
                     }
                 });
@@ -302,37 +328,25 @@
                 event.preventDefault();
             });
         }
-
         //show message create from
-        function showMessage(msg) {
-            var html = "<div class=\"alert alert-warning alert-dismissible fade show\" role = \"alert\" >"
-                +"<strong>"+msg+"</strong> "
-                +"<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">"
-                +"<span aria-hidden=\"true\">&times;</span></button></div >";
+        function showMessage(msg ,title) {
+            $("#messageModalLabel").text(title);
+            $("#messageContent").text(msg);
+            $('#messageModal').modal('show');
+
             console.log(msg);
             document.body.scrollTop = 0; // For Safari
             document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-            $("#error-message").append(html);
+          
 
         }
-        //show message update from
-        function showMessageFormUpdate(msg) {
-            var html = "<div class=\"alert alert-warning alert-dismissible fade show\" role = \"alert\" >"
-                + "<strong>" + msg + "</strong> "
-                + "<button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">"
-                + "<span aria-hidden=\"true\">&times;</span></button></div >";
-            console.log(msg);
-            document.body.scrollTop = 0; // For Safari
-            document.documentElement.scrollTop = 0; // For Chrome, Firefox, IE and Opera
-            $("#error-message-update").append(html);
 
-        }
+        
         //show delete dialog
         function SetEventDeleteDoctorFoBtn() {
             var table = $('#DoctorTable').DataTable();
 
             table.on('draw',function () {
-
 
                 $(".btn-delete-doctor").on("click", function () {
                     var Button = $(this);
@@ -342,13 +356,10 @@
                     ButtonAccept.attr("data-id", id);
                     $("#doctorname-delete").html(doctorname);
                 });
-
             });
 
             $("#btn-accept-delete-doctor").on("click", function () {
                 var Button = $(this);
-                var ButtonAccept = $("");
-
                 var id = Button.attr("data-id");
                 DeleteDocTorByAjax(id);
             });
@@ -411,7 +422,6 @@
 
 
         }
-
         // ajax delete doctor
         function DeleteDocTorByAjax(doctorid) {
 
@@ -432,7 +442,7 @@
                     }
                     if (data.error == 0) {
                         $('#DoctorTable').DataTable().ajax.reload();
-
+                        showMessage("Delete doctor is success ", "Success !")
                     }
                 });
         }
@@ -461,79 +471,79 @@
                     {
                         "data": "DOCTORID",
                         "title": 'ID',
-                        
+
                         "searchable": true
 
                     },
                     {
                         "data": "DOCTORNAME",
                         "title": "Name",
-                       
+
                         "searchable": true
 
                     },
                     {
                         "data": "DOCTORGENDER",
                         "title": "Gender",
-                      
+
                         "searchable": true
                     },
                     {
                         "data": "DOCTORDATEOFBIRTH",
                         "title": "BrithDate",
-                       
+
                         "searchable": true
                     },
                     {
                         "data": "DOCTORMOBILENO",
                         "title": "Mobile NO",
-                       
+
                         "searchable": true
                     }, {
                         "data": "DOCTORADDRESS",
                         "title": "Address",
-                        
+
                         "searchable": true
                     }, {
                         "data": "DEPARTMENT",
                         "title": "Deparment",
-                       
+
                         "searchable": true
                     },
                     {
                         "data": "WORKINGSTARTDATE",
                         "title": "Working Start Date",
-                        
+
                         "searchable": true
                     },
                     {
                         "data": "WORKINGENDDATE",
                         "title": "Working End Date",
-                       
+
                         "searchable": true
                     },
                     {
                         "data": "CREATEBY",
                         "title": "Create By",
-                       
+
                         "searchable": true
                     },
                     {
                         "data": "CREATEDATE",
                         "title": "Create Date",
-                        
+
                         "searchable": true
                     },
                     {
                         "data": "UPDATEBY",
                         "title": "Update By",
-                        
+
                         "searchable": true
                     },
                     {
                         "data": "UPDATEDATE",
                         "title": "Update Date",
-                        
+
                         "searchable": true
                     },
                     {
@@ -543,25 +553,26 @@
                         "searchable": true,
                         "render": function (data, type, row) {
                             console.log(data  , type , row);
-                            return "<btn class=\"btn-delete-doctor btn btn-sm btn-danger \" data-id=\"" + row.DOCTORID + "\" data-doctorname=\""+row.DOCTORNAME+"\" data-toggle=\"modal\" data-target=\"#accept-delete-doctor\"> Delete </btn> " 
-                                + "<btn class=\"btn-update-doctor btn btn-sm btn-primary \" data-id=\"" + row.DOCTORID + "\" data-doctorname=\"" + row.DOCTORNAME +"\"> Edit </btn>" }
+                            return "<btn class=\"btn-update-doctor btn btn-sm btn-primary \" data-id=\"" + row.DOCTORID + "\" data-doctorname=\"" + row.DOCTORNAME + "\"> Edit </btn>"
+                            + "<btn class=\"btn-delete-doctor btn btn-sm btn-danger ml-2\" data-id=\"" + row.DOCTORID + "\" data-doctorname=\"" + row.DOCTORNAME + "\" data-toggle=\"modal\" data-target=\"#accept-delete-doctor\"> Delete </btn> " }
 
                     },
                 ]
 
             });
 
-           
+
             $(window).trigger('resize');
 
         }
+
+        
 
         $("document").ready(function () {
             setbtnonffoform();
             setSubmitFormByAjax();
             setSubmitFormUdateByAjax();
             initJqueryDatatable();
-
             SetEventUpdateDoctorFoBtn();
             SetEventDeleteDoctorFoBtn();
         });

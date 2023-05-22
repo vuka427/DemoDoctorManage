@@ -54,39 +54,39 @@ namespace DoctorManage.Controllers
             var sortColumnIndex = Convert.ToInt32(HttpContext.Request.QueryString["iSortCol_0"]);
             var sortDirection = HttpContext.Request.QueryString["sSortDir_0"];
 
-            if (sortColumnIndex == 0)
+            if (sortColumnIndex == 1)
             {
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(c => c.DOCTORID) : Doctors.OrderByDescending(c => c.DOCTORID);
             }
-            else if (sortColumnIndex == 3)
+            else if (sortColumnIndex == 4)
             {
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(c => c.DOCTORDATEOFBIRTH) : Doctors.OrderByDescending(c => c.DOCTORDATEOFBIRTH);
             }
-            else if (sortColumnIndex == 7)
+            else if (sortColumnIndex == 8)
             {
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(c => c.WORKINGSTARTDATE) : Doctors.OrderByDescending(c => c.WORKINGSTARTDATE);
             }
-            else if (sortColumnIndex == 8)
+            else if (sortColumnIndex == 9)
             {
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(c => c.WORKINGENDDATE) : Doctors.OrderByDescending(c => c.WORKINGENDDATE);
             }
-            else if (sortColumnIndex == 10)
+            else if (sortColumnIndex == 11)
             {
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(c => c.CREATEDATE) : Doctors.OrderByDescending(c => c.CREATEDATE);
             }
-            else if (sortColumnIndex == 12)
+            else if (sortColumnIndex == 13)
             {
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(c => c.UPDATEDATE) : Doctors.OrderByDescending(c => c.CREATEDATE);
             }
             else
             {
                 Func<DoctorViewModel, string> orderingFunction = e =>
-                                                           sortColumnIndex == 1 ? e.DOCTORNAME :
-                                                           sortColumnIndex == 2 ? e.DOCTORGENDER :
-                                                           sortColumnIndex == 4 ? e.DOCTORMOBILENO :
-                                                           sortColumnIndex == 5 ? e.DOCTORADDRESS :
-                                                           sortColumnIndex == 6 ? e.DEPARTMENT :
-                                                           sortColumnIndex == 9 ? e.CREATEBY :
+                                                           sortColumnIndex == 2 ? e.DOCTORNAME :
+                                                           sortColumnIndex == 3 ? e.DOCTORGENDER :
+                                                           sortColumnIndex == 5 ? e.DOCTORMOBILENO :
+                                                           sortColumnIndex == 6 ? e.DOCTORADDRESS :
+                                                           sortColumnIndex == 7 ? e.DEPARTMENT :
+                                                           sortColumnIndex == 10 ? e.CREATEBY :
                                                            e.UPDATEBY;//11
 
                 Doctors = sortDirection == "asc" ? Doctors.OrderBy(orderingFunction) : Doctors.OrderByDescending(orderingFunction);
@@ -119,6 +119,10 @@ namespace DoctorManage.Controllers
                 
                 return Json(new { error = 1, msg =  "Doctor name is not null !"});
             }
+            if (model.DOCTORNAME.Length>=50)
+            {
+                return Json(new { error = 1, msg = "Doctor name charater max lenght is 50!" });
+            }
             if (String.IsNullOrEmpty(model.DOCTORGENDER) && (model.DOCTORGENDER != "Male" || model.DOCTORGENDER != "Female"))
             {
                 
@@ -144,6 +148,10 @@ namespace DoctorManage.Controllers
             {
 
                 return Json(new { error = 1, msg = "Address is not null !" });
+            }
+            if (model.DOCTORNAME.Length >= 265)
+            {
+                return Json(new { error = 1, msg = "Doctor address charater max lenght is 256!" });
             }
 
             var mapper = MapperServices.InitializeAutomapper();

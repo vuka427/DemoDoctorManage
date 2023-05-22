@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.Data.Entity.Migrations;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -24,7 +25,7 @@ namespace DoctorManage.Controllers
         // GET: DEPARTMENT
         public ActionResult Index()
         {
-            return View(_dbContext.DEPARTMENT.ToList());
+            return View(_dbContext.DEPARTMENT.Where(d=>d.DELETEFLAG == false).ToList());
         }
 
         // GET: DEPARTMENT/Details/5
@@ -122,9 +123,18 @@ namespace DoctorManage.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            DEPARTMENT dEPARTMENT = _dbContext.DEPARTMENT.Find(id);
-            _dbContext.DEPARTMENT.Remove(dEPARTMENT);
-            _dbContext.SaveChanges();
+            DEPARTMENT dEPARTMENT = _dbContext.DEPARTMENT.Include("DOCTORMODEL").Where(d=>d.DEPARTMENTID == id).FirstOrDefault();
+            if (dEPARTMENT != null)
+            {
+                if (!(dEPARTMENT.DOCTORMODEL.Count > 0))
+                {
+                    dEPARTMENT.DELETEFLAG = true;
+                    _dbContext.DEPARTMENT.AddOrUpdate(dEPARTMENT);
+                    _dbContext.SaveChanges();
+                }
+
+            }
+           
             return RedirectToAction("Index");
         }
 
