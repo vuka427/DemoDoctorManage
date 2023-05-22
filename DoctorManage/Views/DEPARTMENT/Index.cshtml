@@ -1,14 +1,14 @@
 ﻿@model IEnumerable<DoctorManage.Models.Database.DEPARTMENT>
 
 @{
-    ViewBag.Title = "Index";
+    ViewBag.Title = "Department";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2>Index</h2>
 
 <p>
-    @Html.ActionLink("Create New", "Create")
+    @Html.ActionLink("Create Department", "Create",new {}, new { @class = "btn btn-primary"})
 </p>
 <table class="table">
     <tr>
@@ -17,18 +17,6 @@
         </th>
         <th>
             @Html.DisplayNameFor(model => model.CREATEBY)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.CREATEDATE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UPDATEBY)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.UPDATEDATE)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.DELETEFLAG)
         </th>
         <th></th>
     </tr>
@@ -41,22 +29,11 @@
         <td>
             @Html.DisplayFor(modelItem => item.CREATEBY)
         </td>
+     
         <td>
-            @Html.DisplayFor(modelItem => item.CREATEDATE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UPDATEBY)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.UPDATEDATE)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DELETEFLAG)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.DEPARTMENTID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.DEPARTMENTID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.DEPARTMENTID })
+            @Html.ActionLink("Edit", "Edit", new { id=item.DEPARTMENTID  }, new { @class = "btn btn-primary" }) |
+            @Html.ActionLink("Details", "Details", new { id=item.DEPARTMENTID }, new {  @class = "btn btn-primary" }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.DEPARTMENTID  }, new {  @class = "btn btn-danger" })
         </td>
     </tr>
 }

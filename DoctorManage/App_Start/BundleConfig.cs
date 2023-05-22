@@ -19,17 +19,22 @@ namespace DoctorManage
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include(
                         "~/Scripts/modernizr-*"));
 
-            bundles.Add(new Bundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+            bundles.Add(new ScriptBundle("~/bundles/popper").Include(
+                        "~/Scripts/popper.js"));
 
-            bundles.Add(new Bundle("~/bundles/jquery.dataTables").Include(
-                      "~/Scripts/lib/datatables.net/jquery.dataTables.js"));
+            bundles.Add(new Bundle("~/bundles/jquery.dataTables").Include( 
+                      
+                      "~/Scripts/bootstrap.js",
+                      "~/Scripts/lib/datatables.net/jquery.dataTables.js",
+                      "~/Scripts/lib/datatables.net/dataTables.responsive.js"));
 
-            bundles.Add(new StyleBundle("~/Content/jquery.dataTables.css").Include(
+            bundles.Add(new StyleBundle("~/Content/jquery.dataTables").Include(
                     "~/Content/jquery.dataTables.min.css"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/responsive.bootstrap.min.css",
+                      
                       "~/Content/site.css"));
         }
     }

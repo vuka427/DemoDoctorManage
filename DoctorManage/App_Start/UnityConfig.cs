@@ -1,4 +1,5 @@
 using DoctorManage.Models.Database;
+using DoctorManage.Services;
 using System;
 using System.Data.Entity;
 using System.Web.Mvc;
@@ -14,6 +15,7 @@ namespace DoctorManage
         {
             var container = new UnityContainer();
             container.RegisterType<DbContext, DoctorDbContainer>(TypeLifetime.Transient);
+            
             DependencyResolver.SetResolver(new UnityDependencyResolver(container));
         }
     }

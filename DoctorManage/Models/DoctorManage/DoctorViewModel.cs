@@ -23,7 +23,7 @@ namespace DoctorManage.Models.DoctorManage
         public string UPDATEDATE { get; set; }
         public int DEPARTMENTID { get; set; }
 
-        public string BTNDELETE { get; set; }
+        
 
 
     }

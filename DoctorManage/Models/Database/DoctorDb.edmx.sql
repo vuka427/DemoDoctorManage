@@ -2,7 +2,7 @@
 -- --------------------------------------------------
 -- Entity Designer DDL Script for SQL Server 2005, 2008, 2012 and Azure
 -- --------------------------------------------------
--- Date Created: 05/18/2023 16:05:46
+-- Date Created: 05/20/2023 07:16:33
 -- Generated from EDMX file: D:\WorkspaceTTTT\Demo\ProjectDemo\DoctorManage\DoctorManage\Models\Database\DoctorDb.edmx
 -- --------------------------------------------------
 
@@ -17,8 +17,8 @@ GO
 -- Dropping existing FOREIGN KEY constraints
 -- --------------------------------------------------
 
-IF OBJECT_ID(N'[dbo].[FK_DEPARTMENTDOCTORMODEL]', 'F') IS NOT NULL
-    ALTER TABLE [dbo].[DOCTOR] DROP CONSTRAINT [FK_DEPARTMENTDOCTORMODEL];
+IF OBJECT_ID(N'[dbo].[FK_DOCTORMODELDEPARTMENT]', 'F') IS NOT NULL
+    ALTER TABLE [dbo].[DOCTOR] DROP CONSTRAINT [FK_DOCTORMODELDEPARTMENT];
 GO
 
 -- --------------------------------------------------
@@ -51,8 +51,7 @@ CREATE TABLE [dbo].[DOCTOR] (
     [CREATEDATE] datetime  NOT NULL,
     [UPDATEBY] nvarchar(50)  NOT NULL,
     [UPDATEDATE] datetime  NOT NULL,
-    [DELETEFLAG] bit  NOT NULL,
-    [DEPARTMENT_DEPARTMENTID] int  NOT NULL
+    [DELETEFLAG] bit  NOT NULL
 );
 GO
 
@@ -88,19 +87,19 @@ GO
 -- Creating all FOREIGN KEY constraints
 -- --------------------------------------------------
 
--- Creating foreign key on [DEPARTMENT_DEPARTMENTID] in table 'DOCTOR'
+-- Creating foreign key on [DEPARTMENTID] in table 'DOCTOR'
 ALTER TABLE [dbo].[DOCTOR]
-ADD CONSTRAINT [FK_DEPARTMENTDOCTORMODEL]
-    FOREIGN KEY ([DEPARTMENT_DEPARTMENTID])
+ADD CONSTRAINT [FK_DOCTORMODELDEPARTMENT]
+    FOREIGN KEY ([DEPARTMENTID])
     REFERENCES [dbo].[DEPARTMENT]
         ([DEPARTMENTID])
     ON DELETE NO ACTION ON UPDATE NO ACTION;
 GO
 
--- Creating non-clustered index for FOREIGN KEY 'FK_DEPARTMENTDOCTORMODEL'
-CREATE INDEX [IX_FK_DEPARTMENTDOCTORMODEL]
+-- Creating non-clustered index for FOREIGN KEY 'FK_DOCTORMODELDEPARTMENT'
+CREATE INDEX [IX_FK_DOCTORMODELDEPARTMENT]
 ON [dbo].[DOCTOR]
-    ([DEPARTMENT_DEPARTMENTID]);
+    ([DEPARTMENTID]);
 GO
 
 -- --------------------------------------------------

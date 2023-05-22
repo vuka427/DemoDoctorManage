@@ -6,9 +6,6 @@
 }
 
 
-
-
-
 <h3 class="text-center mt-2 font-weight-bold">Doctor Management</h3>
 
 <hr />
@@ -20,7 +17,6 @@
 
         </div>
         <div class="row  justify-content-center">
-
             <div class="col-8">
                 <h4 class="text-center">Create Doctor</h4>
                 <form id="form-create-doctor" class="form-group">
@@ -81,14 +77,16 @@
 
     </div>
     @* index doctor *@
-    <div id="table-list-doctor" style=" " class="justify-content-center position-absolute bg-white">
-        <div class=" container " style=" margin-left: -5%; ">
+    <div id="table-list-doctor" style=" " class="container justify-content-center position-absolute bg-white">
+        <div class=" container-fluid " style="width: auto" >
             <btn id="btn-open-form" class=" btn btn-sm btn-primary mb-3 "> Add Doctor </btn>
             <div class="row">
-
-                <table id="DoctorTable" class="display">
-                </table>
+                <div class="col-12">
+                    <table id="DoctorTable" class=" dt-responsive  display nowrap" cellspacing="0" width="100%" style=" margin : auto">
+                    </table>
+                </div>
             </div>
+           
         </div>
 
     </div>
@@ -376,11 +374,6 @@
 
             });
 
-
-
-
-
-
         }
         // load data to form edit
         function LoadDataToForm(doctorid) {
@@ -402,7 +395,7 @@
 
                         console.log(data.doctor);
                         $("#udoctorid").val(data.doctor.DOCTORID);
-                        $("#udoctorname").val(data.doctor.DOCTORNAME);  
+                        $("#udoctorname").val(data.doctor.DOCTORNAME);
                         $("#uaddress").val(data.doctor.DOCTORADDRESS);
                         $("#udepartment").val(String(data.doctor.DEPARTMENTID));
                         $("#ubrithofdate").val(data.doctor.DOCTORDATEOFBIRTH);
@@ -411,7 +404,7 @@
                         $("#uworkingstartdate").val(data.doctor.WORKINGENDDATE);
 
                         $("[name=ugender]").val([data.doctor.DOCTORGENDER]);
-                        
+
 
                     }
              });
@@ -443,16 +436,9 @@
                     }
                 });
         }
-
-
-
-        $(document).ready(function () {
-            setbtnonffoform();
-            setSubmitFormByAjax();
-            setSubmitFormUdateByAjax();
-
-
-            $('#DoctorTable').DataTable({
+        // Jquery datatable
+        function initJqueryDatatable() {
+            var table = $('#DoctorTable').DataTable({
 
                 "sAjaxSource": "@Url.Action("LoadDoctorData", "DoctorManage")",
                 "bServerSide": true,
@@ -465,96 +451,116 @@
                     "processing":
                         '<i class="fa fa-spinner fa-spin fa-3x fa-fw" style="color:#2a2b2b;"></i><span class="sr-only">Loading...</span> '
                 },
-                "columns": [
+                 "columns": [
+                     {
+                         "className": 'dt-control',
+                         "orderable": false,
+                         "data": null,
+                         "defaultContent": '',
+                     },
                     {
                         "data": "DOCTORID",
                         "title": 'ID',
-                        "autoWidth": true,
+                        
                         "searchable": true
 
                     },
                     {
                         "data": "DOCTORNAME",
                         "title": "Name",
-                        "autoWidth": true,
+                       
                         "searchable": true
 
                     },
                     {
                         "data": "DOCTORGENDER",
                         "title": "Gender",
-                        "autoWidth": true,
+                      
                         "searchable": true
                     },
                     {
                         "data": "DOCTORDATEOFBIRTH",
                         "title": "BrithDate",
-                        "autoWidth": true,
+                       
                         "searchable": true
                     },
                     {
                         "data": "DOCTORMOBILENO",
                         "title": "Mobile NO",
-                        "autoWidth": true,
+                       
                         "searchable": true
                     }, {
                         "data": "DOCTORADDRESS",
                         "title": "Address",
-                        "autoWidth": true,
+                        
                         "searchable": true
                     }, {
                         "data": "DEPARTMENT",
                         "title": "Deparment",
-                        "autoWidth": true,
+                       
                         "searchable": true
                     },
                     {
                         "data": "WORKINGSTARTDATE",
                         "title": "Working Start Date",
-                        "autoWidth": true,
+                        
                         "searchable": true
                     },
                     {
                         "data": "WORKINGENDDATE",
                         "title": "Working End Date",
-                        "autoWidth": true,
+                       
                         "searchable": true
                     },
                     {
                         "data": "CREATEBY",
                         "title": "Create By",
-                        "autoWidth": true,
+                       
                         "searchable": true
                     },
                     {
                         "data": "CREATEDATE",
                         "title": "Create Date",
-                        "autoWidth": true,
+                        
                         "searchable": true
                     },
                     {
                         "data": "UPDATEBY",
                         "title": "Update By",
-                        "autoWidth": true,
+                        
                         "searchable": true
                     },
                     {
                         "data": "UPDATEDATE",
                         "title": "Update Date",
-                        "autoWidth": true,
+                        
                         "searchable": true
                     },
                     {
-                        "data": "BTNDELETE",
+                        "data": null,
                         "title": "Task",
-                        "autoWidth": true,
+                        "responsivePriority": 1,
                         "searchable": true,
+                        "render": function (data, type, row) {
+                            console.log(data  , type , row);
+                            return "<btn class=\"btn-delete-doctor btn btn-sm btn-danger \" data-id=\"" + row.DOCTORID + "\" data-doctorname=\""+row.DOCTORNAME+"\" data-toggle=\"modal\" data-target=\"#accept-delete-doctor\"> Delete </btn> " 
+                                + "<btn class=\"btn-update-doctor btn btn-sm btn-primary \" data-id=\"" + row.DOCTORID + "\" data-doctorname=\"" + row.DOCTORNAME +"\"> Edit </btn>" }
 
                     },
                 ]
 
             });
 
+           
+            $(window).trigger('resize');
+
+        }
+
+        $("document").ready(function () {
+            setbtnonffoform();
+            setSubmitFormByAjax();
+            setSubmitFormUdateByAjax();
+            initJqueryDatatable();
 
             SetEventUpdateDoctorFoBtn();
             SetEventDeleteDoctorFoBtn();

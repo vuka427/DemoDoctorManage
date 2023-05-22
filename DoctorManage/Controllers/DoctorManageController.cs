@@ -97,11 +97,7 @@ namespace DoctorManage.Controllers
             var displayResult = Doctors.Skip(param.iDisplayStart) 
                 .Take(param.iDisplayLength).ToList();
             var totalRecords = Doctors.Count();
-            displayResult.ForEach(item =>
-            {
-                item.BTNDELETE = $"<btn class=\"btn-delete-doctor btn btn-sm btn-danger\" data-id=\"{item.DOCTORID}\" data-doctorname=\"{item.DOCTORNAME}\" data-toggle=\"modal\" data-target=\"#accept-delete-doctor\"> Delete </btn>" +
-                                 $"<btn class=\"btn-update-doctor btn btn-sm btn-primary mt-2\" data-id=\"{item.DOCTORID}\" data-doctorname=\"{item.DOCTORNAME}\" > Edit </btn>";
-            });
+          
 
             return Json(new
             {
@@ -241,10 +237,10 @@ namespace DoctorManage.Controllers
                 return Json(new { error = 1, msg = "Can`t find doctor !" });
             }
 
-            var department = _dbContext.DEPARTMENT.Find(Doctors.DEPARTMENTID);
+            var department = _dbContext.DEPARTMENT.Where(d => d.DELETEFLAG == false && d.DEPARTMENTID == Doctors.DEPARTMENTID).FirstOrDefault();
             if (department == null) { return Json(new { error = 1, msg = "Error ! Can`t find Department !" }); }
 
-            Doctors.DEPARTMENT = department;
+           // Doctors.DEPARTMENT = department;
 
             var date = DateTime.Now;
             Doctors.CREATEBY = Olddoctor.CREATEBY;
@@ -266,7 +262,6 @@ namespace DoctorManage.Controllers
 
             return Json(new { error = 0, msg = "" });
         }
-
 
         [HttpPost]
         //load doctor data for edit

@@ -14,7 +14,6 @@ namespace DoctorManage.Services
         public static Mapper InitializeAutomapper()
         {
 
-
             var config = new MapperConfiguration(cfg =>
             {
 

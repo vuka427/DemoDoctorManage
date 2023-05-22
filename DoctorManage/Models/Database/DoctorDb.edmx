@@ -8,9 +8,9 @@
   <EntityContainer Name="DoctorDbStoreContainer">
     <EntitySet Name="DOCTOR" EntityType="DoctorDb.Store.DOCTOR" store:Type="Tables" Schema="dbo" />
     <EntitySet Name="DEPARTMENT" EntityType="DoctorDb.Store.DEPARTMENT" store:Type="Tables" Schema="dbo" />
-    <AssociationSet Name="DEPARTMENTDOCTORMODEL" Association="DoctorDb.Store.DEPARTMENTDOCTORMODEL">
-      <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+    <AssociationSet Name="DOCTORMODELDEPARTMENT" Association="DoctorDb.Store.DOCTORMODELDEPARTMENT">
       <End Role="DOCTORMODEL" EntitySet="DOCTOR" />
+      <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="DOCTOR">
@@ -31,7 +31,6 @@
     <Property Name="UPDATEBY" Type="nvarchar" Nullable="false" MaxLength="50" />
     <Property Name="UPDATEDATE" Type="datetime" Nullable="false" />
     <Property Name="DELETEFLAG" Type="bit" Nullable="false" />
-    <Property Name="DEPARTMENT_DEPARTMENTID" Type="int" Nullable="false" />
   </EntityType>
   <EntityType Name="DEPARTMENT">
     <Key>
@@ -45,15 +44,15 @@
     <Property Name="UPDATEDATE" Type="datetime" Nullable="false" />
     <Property Name="DELETEFLAG" Type="bit" Nullable="false" />
   </EntityType>
-  <Association Name="DEPARTMENTDOCTORMODEL">
-    <End Role="DEPARTMENT" Type="DoctorDb.Store.DEPARTMENT" Multiplicity="1" />
+  <Association Name="DOCTORMODELDEPARTMENT">
     <End Role="DOCTORMODEL" Type="DoctorDb.Store.DOCTOR" Multiplicity="*" />
+    <End Role="DEPARTMENT" Type="DoctorDb.Store.DEPARTMENT" Multiplicity="1" />
     <ReferentialConstraint>
       <Principal Role="DEPARTMENT">
         <PropertyRef Name="DEPARTMENTID" />
       </Principal>
       <Dependent Role="DOCTORMODEL">
-        <PropertyRef Name="DEPARTMENT_DEPARTMENTID" />
+        <PropertyRef Name="DEPARTMENTID" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -64,9 +63,9 @@
         <EntityContainer Name="DoctorDbContainer" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="DOCTOR" EntityType="DoctorDb.DOCTORMODEL" />
           <EntitySet Name="DEPARTMENT" EntityType="DoctorDb.DEPARTMENT" />
-          <AssociationSet Name="DEPARTMENTDOCTORMODEL" Association="DoctorDb.DEPARTMENTDOCTORMODEL">
-            <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
+          <AssociationSet Name="DOCTORMODELDEPARTMENT" Association="DoctorDb.DOCTORMODELDEPARTMENT">
             <End Role="DOCTORMODEL" EntitySet="DOCTOR" />
+            <End Role="DEPARTMENT" EntitySet="DEPARTMENT" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="DOCTORMODEL">
@@ -87,7 +86,7 @@
           <Property Name="UPDATEBY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UPDATEDATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DELETEFLAG" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="DEPARTMENT" Relationship="DoctorDb.DEPARTMENTDOCTORMODEL" FromRole="DOCTORMODEL" ToRole="DEPARTMENT" />
+          <NavigationProperty Name="DEPARTMENT" Relationship="DoctorDb.DOCTORMODELDEPARTMENT" FromRole="DOCTORMODEL" ToRole="DEPARTMENT" />
         </EntityType>
         <EntityType Name="DEPARTMENT">
           <Key>
@@ -100,11 +99,19 @@
           <Property Name="UPDATEBY" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
           <Property Name="UPDATEDATE" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="DELETEFLAG" Type="Boolean" Nullable="false" />
-          <NavigationProperty Name="DOCTORMODEL" Relationship="DoctorDb.DEPARTMENTDOCTORMODEL" FromRole="DEPARTMENT" ToRole="DOCTORMODEL" />
+          <NavigationProperty Name="DOCTORMODEL" Relationship="DoctorDb.DOCTORMODELDEPARTMENT" FromRole="DEPARTMENT" ToRole="DOCTORMODEL" />
         </EntityType>
-        <Association Name="DEPARTMENTDOCTORMODEL">
-          <End Type="DoctorDb.DEPARTMENT" Role="DEPARTMENT" Multiplicity="1" />
+        <Association Name="DOCTORMODELDEPARTMENT">
           <End Type="DoctorDb.DOCTORMODEL" Role="DOCTORMODEL" Multiplicity="*" />
+          <End Type="DoctorDb.DEPARTMENT" Role="DEPARTMENT" Multiplicity="1" />
+          <ReferentialConstraint>
+            <Principal Role="DEPARTMENT">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Principal>
+            <Dependent Role="DOCTORMODEL">
+              <PropertyRef Name="DEPARTMENTID" />
+            </Dependent>
+          </ReferentialConstraint>
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -145,14 +152,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <AssociationSetMapping Name="DEPARTMENTDOCTORMODEL" TypeName="DoctorDb.DEPARTMENTDOCTORMODEL" StoreEntitySet="DOCTOR">
-      <EndProperty Name="DEPARTMENT">
-        <ScalarProperty Name="DEPARTMENTID" ColumnName="DEPARTMENT_DEPARTMENTID" />
-      </EndProperty>
-      <EndProperty Name="DOCTORMODEL">
-        <ScalarProperty Name="DOCTORID" ColumnName="DOCTORID" />
-      </EndProperty>
-    </AssociationSetMapping>
   </EntityContainerMapping>
 </Mapping></edmx:Mappings>
   </edmx:Runtime>

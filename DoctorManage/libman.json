@@ -5,6 +5,10 @@
     {
       "library": "datatables.net@2.1.1",
       "destination": "Scripts/lib/datatables.net/"
+    },
+    {
+      "library": "popper.js@2.11.7",
+      "destination": "Scripts/lib/popper.js/"
     }
   ]
 }
