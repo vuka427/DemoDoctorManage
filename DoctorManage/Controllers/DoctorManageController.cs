@@ -113,12 +113,25 @@ namespace DoctorManage.Controllers
         public JsonResult CreateDoctor( DoctorViewModel model )
         {
             
+            model.DOCTORNAME = model.DOCTORNAME!=null?  model.DOCTORNAME.Trim() : model.DOCTORNAME;
+            model.DOCTORADDRESS = model.DOCTORADDRESS!=null?  model.DOCTORADDRESS.Trim() : model.DOCTORADDRESS;
+
+            var formatString  = @"^[\p{L}\p{N}\s]*$"; // \|!#$%&/()=?»«@£§€{}.-;'<>_,
+
 
             if (String.IsNullOrEmpty(model.DOCTORNAME))
             {
                 
                 return Json(new { error = 1, msg =  "Doctor name is not null !"});
             }
+
+            Match strname = Regex.Match(model.DOCTORNAME, formatString, RegexOptions.IgnoreCase);
+            if (!strname.Success) 
+            {
+                return Json(new { error = 1, msg = $"Doctor name does not contain any special characters !" });
+            }
+
+
             if (model.DOCTORNAME.Length>=50)
             {
                 return Json(new { error = 1, msg = "Doctor name charater max lenght is 50!" });
@@ -129,9 +142,19 @@ namespace DoctorManage.Controllers
                 return Json(new { error = 1, msg =  "Gender not match!"});
             }
 
-            if (!String.IsNullOrEmpty(model.DOCTORMOBILENO))
+            DateTime dateofbirth ;
+            if(!DateTime.TryParse(model.DOCTORDATEOFBIRTH ,out dateofbirth)){
+                return Json(new { error = 1, msg = "error date of birth !" });
+            }
+             
+            if (dateofbirth > DateTime.Now)
+            {
+                return Json(new { error = 1, msg = "Date of birth smaller than current date !" });
+            }
 
-                {string patternMobile = @"(84|0[3|5|7|8|9])+([0-9]{8})\b";
+            if (!String.IsNullOrEmpty(model.DOCTORMOBILENO)){
+
+                string patternMobile = @"(84|0[3|5|7|8|9])+([0-9]{8})\b";
                 Match m = Regex.Match(model.DOCTORMOBILENO, patternMobile, RegexOptions.IgnoreCase);
             
                 if (!m.Success) //mobile
@@ -151,14 +174,18 @@ namespace DoctorManage.Controllers
             }
             if (model.DOCTORNAME.Length >= 265)
             {
-                return Json(new { error = 1, msg = "Doctor address charater max lenght is 256!" });
+                return Json(new { error = 1, msg = "Doctor address charater max lenght is 256 !" });
             }
 
             var mapper = MapperServices.InitializeAutomapper();
             DOCTORMODEL Doctors = mapper.Map<DoctorViewModel, DOCTORMODEL>(model);
 
-          
-            
+            if (Doctors.WORKINGSTARTDATE >= Doctors.WORKINGENDDATE)
+            {
+                return Json(new { error = 1, msg = "Working start date smaller than Working end date !" });
+            }
+
+
             var department = _dbContext.DEPARTMENT.Find(Doctors.DEPARTMENTID);
             if(department == null) { return Json(new { error = 1, msg = "Error ! Can`t find Department !" }); }
             Doctors.DEPARTMENT = department;
@@ -173,7 +200,7 @@ namespace DoctorManage.Controllers
             _dbContext.SaveChanges();
 
 
-            return Json(new {error = 0 , msg =""});
+            return Json(new {error = 0 , msg ="ok"});
         }
 
         [HttpPost]
@@ -201,16 +228,39 @@ namespace DoctorManage.Controllers
         public JsonResult UpdateDoctor(DoctorViewModel model)
         {
 
+            model.DOCTORNAME = model.DOCTORNAME != null ? model.DOCTORNAME.Trim() : model.DOCTORNAME;
+            model.DOCTORADDRESS = model.DOCTORADDRESS != null ? model.DOCTORADDRESS.Trim() : model.DOCTORADDRESS;
+
+            var formatString = @"^[\p{L}\p{N}\s]*$"; //  \|!#$%&/()=?»«@£§€{}.-;'<>_,
+
 
             if (String.IsNullOrEmpty(model.DOCTORNAME))
             {
 
                 return Json(new { error = 1, msg = "Doctor name is not null !" });
             }
+
+            Match strname = Regex.Match(model.DOCTORNAME, formatString, RegexOptions.IgnoreCase);
+            if (!strname.Success)
+            {
+                return Json(new { error = 1, msg = $"Doctor name does not contain any special characters !" });
+            }
+
             if (String.IsNullOrEmpty(model.DOCTORGENDER) && (model.DOCTORGENDER != "Male" || model.DOCTORGENDER != "Female"))
             {
 
                 return Json(new { error = 1, msg = "Gender not match!" });
+            }
+
+            DateTime dateofbirth;
+            if (!DateTime.TryParse(model.DOCTORDATEOFBIRTH, out dateofbirth))
+            {
+                return Json(new { error = 1, msg = "error date of birth !" });
+            }
+
+            if (dateofbirth > DateTime.Now)
+            {
+                return Json(new { error = 1, msg = "Date of birth smaller than current date !" });
             }
 
             if (!String.IsNullOrEmpty(model.DOCTORMOBILENO))
@@ -238,11 +288,17 @@ namespace DoctorManage.Controllers
             var mapper = MapperServices.InitializeAutomapper();
             DOCTORMODEL Doctors = mapper.Map<DoctorViewModel, DOCTORMODEL>(model);
 
+            if (Doctors.WORKINGSTARTDATE >= Doctors.WORKINGENDDATE)
+            {
+                return Json(new { error = 1, msg = "Working start date smaller than Working end date !" });
+            }
+
+
             var Olddoctor = _dbContext.DOCTOR.Find(Doctors.DOCTORID);
             
             if(Olddoctor == null)
             {
-                return Json(new { error = 1, msg = "Can`t find doctor !" });
+                return Json(new { error = 1, msg = "Can`t find doctor !"});
             }
 
             var department = _dbContext.DEPARTMENT.Where(d => d.DELETEFLAG == false && d.DEPARTMENTID == Doctors.DEPARTMENTID).FirstOrDefault();

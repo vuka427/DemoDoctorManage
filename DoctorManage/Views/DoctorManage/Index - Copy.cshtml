@@ -148,11 +148,11 @@
                         </div>
                         <div class="form-group">
                             <label for="uworkingstartdate" class="control-label">Working start date</label>
-                            <input type="date" class="form-control" id="uworkingstartdate"  >
+                            <input type="date" class="form-control" id="uworkingstartdate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
                         </div>
                         <div class="form-group">
                             <label for="uworkingenddate" class="control-label">Working end date</label>
-                            <input type="date" class="form-control" id="uworkingenddate" >
+                            <input type="date" class="form-control" id="uworkingenddate" value="@DateTime.Now.ToString("yyyy-MM-dd")">
                         </div>
                         <div class="form-group text-center">
                             <input type="submit" class="btn btn-primary" value="Update">
@@ -341,7 +341,7 @@
 
         }
 
-        
+        var gid = null;
         //show delete dialog
         function SetEventDeleteDoctorFoBtn() {
             var table = $('#DoctorTable').DataTable();
@@ -350,18 +350,13 @@
 
                 $(".btn-delete-doctor").on("click", function () {
                     var Button = $(this);
-                    var ButtonAccept = $("#btn-accept-delete-doctor");
-                    var doctorname = Button.data("doctorname");
-                    var id = Button.data("id");
-                    ButtonAccept.attr("data-id", id);
-                    $("#doctorname-delete").html(doctorname);
+                    gid = Button.data("id");
+                   
                 });
             });
 
             $("#btn-accept-delete-doctor").on("click", function () {
-                var Button = $(this);
-                var id = Button.attr("data-id");
-                DeleteDocTorByAjax(id);
+                DeleteDocTorByAjax(gid);
             });
 
         }
@@ -411,8 +406,8 @@
                         $("#udepartment").val(String(data.doctor.DEPARTMENTID));
                         $("#ubrithofdate").val(data.doctor.DOCTORDATEOFBIRTH);
                         $("#umobile").val(data.doctor.DOCTORMOBILENO);
-                        $("#uworkingenddate").val(data.doctor.WORKINGENDDATE);
-                        $("#uworkingstartdate").val(data.doctor.WORKINGSTARTDATE);
+                        $("#uworkingenddate").val(data.doctor.WORKINGSTARTDATE);
+                        $("#uworkingstartdate").val(data.doctor.WORKINGENDDATE);
 
                         $("[name=ugender]").val([data.doctor.DOCTORGENDER]);
 
@@ -442,7 +437,7 @@
                     }
                     if (data.error == 0) {
                         $('#DoctorTable').DataTable().ajax.reload();
-                        showMessage("Delete doctor is success ", "Success !")
+                        
                     }
                 });
         }
